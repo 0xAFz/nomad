@@ -5,14 +5,14 @@ if [[ $EUID -ne 0 ]]; then
     exit 1
 fi
 
-if [ -f .env ]; then
-    set -o allexport
-    source .env
-    set +o allexport
-else
+if [[ ! -f .env ]]; then
     echo ".env file not found!"
     exit 1
 fi
+
+set -o allexport
+source .env
+set +o allexport
 
 apt update && apt install -y curl wget htop vim
 
