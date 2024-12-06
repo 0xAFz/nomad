@@ -29,14 +29,14 @@ vim .env
     ./nomad.sh client
     ```
 ### Panel setup
-On both server and client you must install `3x-ui` panel for tunneling and creating vpn inbounds like (wireguard, ..)
+On both servers (client, server) you must install `3x-ui` panel for tunneling and creating VPN inbounds like (wireguard, ..)
 ```bash
 chmod +x panel.sh
 
 ./panel.sh
 ```
 Now you should access to panel from this address: http://<YOUR_IP>:<XUI_PORT>/  
-example: http://192.168.1.100:2053/
+Example: http://192.168.1.100:2053/
 
 # Credits
 - [tinyfecVPN](https://github.com/wangyu-/tinyfecVPN)
