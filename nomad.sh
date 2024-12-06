@@ -21,16 +21,20 @@ CONFIG_DIR='/root/nomad'
 SERVICE_FILE='/etc/systemd/system/nomad.service'
 
 if [[ ! -x "$FILE" ]]; then
+    echo "making $FILE executable..."
     chmod +x "$FILE"
 fi
 
 reload_service() {
+    echo "reloading systemd and enabling the service."
     systemctl daemon-reload
-    systemctl enable nomad
+    systemctl enable nomad &> /dev/null
     systemctl restart nomad
+    echo "nomad service is running"
 }
 
 server_setup() {
+    echo "setting up nomad server..."
     COMMAND="-s -l[::]:$PORT $FEC --sub-net $SUBNET --mode 1 --timeout 1 --tun-dev nomad --disable-obscure"
 
     cat <<EOF >"$SERVICE_FILE"
@@ -52,6 +56,7 @@ EOF
 }
 
 client_setup() {
+    echo "setting up nomad client..."
     COMMAND="-c -r$SERVER_ADDR:$PORT $FEC --sub-net $SUBNET --tun-dev nomad --keep-reconnect --disable-obscure"
 
     cat <<EOF >"$SERVICE_FILE"
@@ -78,14 +83,14 @@ if [[ $# -lt 1 ]]; then
 fi
 
 case "$1" in
-    server)
-        server_setup
-        ;;
-    client)
-        client_setup
-        ;;
-    *)
-        echo "Invalid action. Use 'server' or 'client'."
-        exit 1
-        ;;
+server)
+    server_setup
+    ;;
+client)
+    client_setup
+    ;;
+*)
+    echo "Invalid action. Use 'server' or 'client'."
+    exit 1
+    ;;
 esac
