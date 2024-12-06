@@ -2,31 +2,31 @@
 Gaming VPN Setup Automation
 
 ## Usage
-Clone repo on both server and client
+Clone repo on both servers (client, server)
 ```bash
 git clone https://github.com/0xAFz/nomad.git
 
 cd nomad/
 ```
-At first on both server and client you must edit `.env` file and replace your values 
+At first on both servers (client, server) you must edit `.env` file and replace your values 
 ```bash
 cp .env.example .env
 
 vim .env
 ```
 1. #### Server setup
-    Run `server.sh` to install and configure server
+    Run `nomad.sh server` to install and configure server
     ```bash
-    chmod +x server.sh
+    chmod +x nomad.sh
 
-    ./server.sh
+    ./nomad.sh server
     ```
 2. #### Client setup
-    Run `client.sh` to install and configure client
+    Run `nomad.sh client` to install and configure client
     ```bash
-    chmod +x client.sh
+    chmod +x nomad.sh
 
-    ./client.sh
+    ./nomad.sh client
     ```
 ### Panel setup
 On both server and client you must install `3x-ui` panel for tunneling and creating vpn inbounds like (wireguard, ..)
