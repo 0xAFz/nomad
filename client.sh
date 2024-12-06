@@ -21,7 +21,7 @@ chmod +x $FILE
 CONFIG_DIR='/root/nomad'
 SERVICE_FILE='/etc/systemd/system/nomad.service'
 
-COMMAND="-c -r$1:$PORT $FEC --sub-net $SUBNET --tun-dev nomad --keep-reconnect --disable-obscure"
+COMMAND="-c -r$SERVER_ADDR:$PORT $FEC --sub-net $SUBNET --tun-dev nomad --keep-reconnect --disable-obscure"
 
 cat <<EOF >"$SERVICE_FILE"
 [Unit]
