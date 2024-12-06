@@ -22,7 +22,7 @@ vim .env
     ./server.sh
     ```
 2. #### Client setup
-    Run `server.sh` to install and configure client
+    Run `client.sh` to install and configure client
     ```bash
     chmod +x client.sh
 
