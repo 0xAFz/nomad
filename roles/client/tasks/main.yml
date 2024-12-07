@@ -1,0 +1,15 @@
+---
+- name: Create Nomad Client systemd service file
+  template:
+    src: client.service.j2
+    dest: /etc/systemd/system/nomad.service
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Reload and enable Nomad Client service
+  systemd:
+    daemon_reload: true
+    name: nomad
+    state: restarted
+    enabled: true

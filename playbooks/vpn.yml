@@ -1,0 +1,6 @@
+---
+- name: Server tasks
+  import_playbook: server.yml
+
+- name: Client tasks
+  import_playbook: client.yml

@@ -2,40 +2,34 @@
 Gaming VPN Setup Automation
 
 ## Usage
-Clone repo on both servers (client, server)
+#### 1. Clone repository on your local machine
 ```bash
 git clone https://github.com/0xAFz/nomad.git
 
 cd nomad/
 ```
-At first on both servers (client, server) you must edit `.env` file and replace your values 
+#### 2. At first you must edit `.env` file and replace your values 
 ```bash
 cp .env.example .env
 
-vim .env
+<your-favorite-editor> .env
 ```
-1. #### Server setup
-    Run `nomad.sh server` to install and configure server
-    ```bash
-    chmod +x nomad.sh
-
-    ./nomad.sh server
-    ```
-2. #### Client setup
-    Run `nomad.sh client` to install and configure client
-    ```bash
-    chmod +x nomad.sh
-
-    ./nomad.sh client
-    ```
-### Panel setup
-On both servers (client, server) you must install `3x-ui` panel for tunneling and creating VPN inbounds like (wireguard, ..)
+#### 3. Build your own inventory
 ```bash
-chmod +x panel.sh
+cp inventory/sample.yml inventory/hosts.yml
+<your-favorite-editor> inventory/hosts.yml
 
-./panel.sh
+# Review and change parameters under ``inventory/group_vars``
+<your-favorite-editor> inventory/group_vars/all/all.yml
 ```
-Now you should access to panel from this address: http://<YOUR_IP>:<XUI_PORT>/  
+#### 4. Run `nomad.sh` to install and configure both servers
+```bash
+chmod +x nomad.sh
+```
+```bash
+./nomad.sh
+```
+You should access to panel from this address: http://<YOUR_IP>:<XUI_PORT>/  
 Example: http://192.168.1.100:2053/
 
 # Credits

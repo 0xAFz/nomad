@@ -1,0 +1,22 @@
+---
+- name: Install 3x-UI panel
+  shell: |
+    if ! command -v x-ui &> /dev/null; then
+      yes n | bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)
+    fi
+  args:
+    executable: /bin/bash
+
+- name: Enable and start 3x-UI panel
+  systemd:
+    name: x-ui
+    enabled: yes
+    state: started
+
+- name: Configure 3x-UI panel
+  shell: |
+    /usr/local/x-ui/x-ui setting -port {{ xui_port  }} -username {{ xui_username  }} -password {{ xui_password  }} -webBasePath {{ xui_web_path  }} && /usr/local/x-ui/x-ui migrate
+  args:
+    executable: /bin/bash
+  notify: 
+    - restart x-ui

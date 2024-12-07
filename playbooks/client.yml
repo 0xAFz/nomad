@@ -1,0 +1,8 @@
+---
+- name: Common tasks for every playbooks
+  import_playbook: common.yml
+
+- hosts: client
+  become: true
+  roles:
+    - ../roles/client
