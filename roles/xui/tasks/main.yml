@@ -15,7 +15,7 @@
 
 - name: Configure 3x-UI panel
   shell: |
-    /usr/local/x-ui/x-ui setting -port {{ xui_port  }} -username {{ xui_username  }} -password {{ xui_password  }} -webBasePath {{ xui_web_path  }} && /usr/local/x-ui/x-ui migrate
+    /usr/local/x-ui/x-ui setting -port {{ xui_port }} -username {{ xui_username }} -password {{ xui_password }} -webBasePath {{ xui_web_path }} && /usr/local/x-ui/x-ui migrate
   args:
     executable: /bin/bash
   notify: 
