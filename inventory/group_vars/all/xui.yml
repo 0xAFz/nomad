@@ -1,0 +1,7 @@
+---
+xui_port: 2053
+
+xui_username: "{{ lookup('env', 'XUI_USERNAME') | default('admin') }}"
+xui_password: "{{ lookup('env', 'XUI_PASSWORD') | default('admin') }}"
+
+xui_web_path: /

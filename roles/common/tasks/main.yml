@@ -20,10 +20,29 @@
     group: root
     mode: '0755'
 
-- name: Copy Nomad binary to servers
+- name: Copy FEC binary to servers
   copy:
     src: files/nomad_amd64
     dest: "{{ config_dir }}/bin/nomad_amd64"
     owner: root
     group: root
     mode: '0755'
+  when: enable_fec
+
+- name: Copy EasyTier Core binary to servers
+  copy:
+    src: files/easytier-core
+    dest: "{{ config_dir }}/bin/easytier-core"
+    owner: root
+    group: root
+    mode: '0755'
+  when: enable_easytier
+
+- name: Copy EasyTier Cli binary to servers
+  copy:
+    src: files/easytier-cli
+    dest: "{{ config_dir }}/bin/easytier-cli"
+    owner: root
+    group: root
+    mode: '0755'
+  when: enable_easytier

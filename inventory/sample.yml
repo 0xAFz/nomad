@@ -1,10 +1,10 @@
 all:
   hosts:
-    server:
+    local_network:
       ansible_host: 1.1.1.1
       ansible_port: 22
       ansible_user: root
-    client:
+    external_network:
       ansible_host: 1.1.1.2
       ansible_port: 22
       ansible_user: root

@@ -1,0 +1,12 @@
+[Unit]
+Description=Nomad EasyTier Service
+After=network.target
+
+[Service]
+ExecStart={{ config_dir }}/bin/easytier-core -i {{ easytier_client_local_ip }} --peers {{ easytier_protocol }}://{{ hostvars["external_network"].ansible_host }}:{{ easytier_port }} --hostname nomad-easytier --network-secret {{ easytier_secret }} --default-protocol {{ easytier_protocol }} {% if not easytier_multithread %} --multi-thread {% endif %} {% if not easytier_encryption %} --disable-encryption {% endif %} {% if not easytier_ipv6 %} --disable-ipv6 {% endif %}
+
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

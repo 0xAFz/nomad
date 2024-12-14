@@ -1,0 +1,6 @@
+---
+fec_port: 4096
+
+fec_subnet: 10.22.22.0
+
+fec: 4:2

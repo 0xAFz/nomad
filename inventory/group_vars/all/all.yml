@@ -1,10 +1,12 @@
+---
 config_dir: /opt/nomad
 
-port: 4096
-subnet: "10.22.22.0"
-fec: "4:2"
-
-xui_port: 2053
-xui_username: "{{ lookup('env', 'XUI_USERNAME') | default('admin') }}"
-xui_password: "{{ lookup('env', 'XUI_PASSWORD') | default('admin') }}"
-xui_web_path: /
+##
+## Define which services should run on your servers.
+## Set `true` to enable a service or `false` to disable it.
+##
+## If both `enable_fec` and `enable_easytier` are set to `true`,
+## both services will be deployed and started on the servers.
+##
+enable_fec: false       # Set to true to enable the Nomad FEC service
+enable_easytier: true   # Set to true to enable the Nomad EasyTier service

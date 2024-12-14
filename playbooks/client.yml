@@ -2,7 +2,7 @@
 - name: Common tasks for every playbooks
   import_playbook: common.yml
 
-- hosts: client
+- hosts: internal_network
   become: true
   roles:
     - ../roles/client

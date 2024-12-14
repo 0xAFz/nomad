@@ -1,15 +1,34 @@
 ---
-- name: Create Nomad Server systemd service file
+- name: Create Nomad FEC systemd service
   template:
-    src: server.service.j2
-    dest: /etc/systemd/system/nomad.service
+    src: fec.service.j2
+    dest: /etc/systemd/system/nomad-fec.service
     owner: root
     group: root
     mode: '0644'
+  when: enable_fec
 
-- name: Reload and enable Nomad Server service
+- name: Reload and enable Nomad FEC service
   systemd:
     daemon_reload: true
-    name: nomad
+    name: nomad-fec
     state: restarted
     enabled: true
+  when: enable_fec
+
+- name: Create Nomad EasyTier systemd service
+  template:
+    src: easytier.service.j2
+    dest: /etc/systemd/system/nomad-easytier.service
+    owner: root
+    group: root
+    mode: '0644'
+  when: enable_easytier
+
+- name: Reload and enable Nomad EasyTier service
+  systemd:
+    daemon_reload: true
+    name: nomad-easytier
+    state: restarted
+    enabled: true
+  when: enable_easytier
