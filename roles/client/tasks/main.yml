@@ -7,14 +7,8 @@
     group: root
     mode: '0644'
   when: enable_fec
-
-- name: Reload and enable Nomad FEC service
-  systemd:
-    daemon_reload: true
-    name: nomad-fec
-    state: restarted
-    enabled: true
-  when: enable_fec
+  tags: 
+    - fec
 
 - name: Create Nomad EasyTier systemd service
   template:
@@ -24,11 +18,43 @@
     group: root
     mode: '0644'
   when: enable_easytier
+  tags: 
+    - easytier
 
-- name: Reload and enable Nomad EasyTier service
+- name: Enable Nomad FEC service
   systemd:
+    name: nomad-fec
+    state: started
     daemon_reload: true
+    enabled: true
+  when: enable_fec
+  tags: 
+    - fec
+
+- name: Enable Nomad EasyTier service
+  systemd:
     name: nomad-easytier
-    state: restarted
+    state: started
+    daemon_reload: true
     enabled: true
   when: enable_easytier
+  tags: 
+    - easytier
+
+- name: Restart Nomad FEC service
+  systemd:
+    name: nomad-fec
+    state: restarted
+    daemon_reload: true
+  when: enable_fec
+  tags: 
+    - fec
+
+- name: Restart Nomad EasyTier service
+  systemd:
+    name: nomad-easytier
+    state: restarted
+    daemon_reload: true
+  when: enable_easytier
+  tags: 
+    - easytier

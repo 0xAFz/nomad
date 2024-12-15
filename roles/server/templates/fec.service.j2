@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart={{ config_dir }}/bin/nomad_amd64 -s -l[::]:{{ fec_port }} {{ fec }} --sub-net {{ fec_subnet }} --mode 1 --timeout 1 --tun-dev nomad-fec --disable-obscure
+ExecStart={{ config_dir }}/bin/nomad_amd64 -s -l[::]:{{ fec_port }} -f{{ fec }} --sub-net {{ fec_subnet }} --mode 1 --timeout 1 --tun-dev nomad-fec --disable-obscure
 Restart=always
 RestartSec=3
 

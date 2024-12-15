@@ -8,5 +8,5 @@ config_dir: /opt/nomad
 ## If both `enable_fec` and `enable_easytier` are set to `true`,
 ## both services will be deployed and started on the servers.
 ##
-enable_fec: false       # Set to true to enable the Nomad FEC service
-enable_easytier: true   # Set to true to enable the Nomad EasyTier service
+enable_fec: true         # Set to true to enable the Nomad FEC service
+enable_easytier: false   # Set to true to enable the Nomad EasyTier service
