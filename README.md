@@ -34,3 +34,4 @@ Example: http://192.168.1.100:2053/
 
 # Credits
 - [tinyfecVPN](https://github.com/wangyu-/tinyfecVPN)
+- [EasyTier](https://github.com/EasyTier/EasyTier)
