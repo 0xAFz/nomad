@@ -19,20 +19,14 @@
     state: restarted
 
 - name: Restart auditd
-  become: yes
-  ansible.builtin.command: service auditd restart
-  args:
-    warn: false
+  command: systemctl restart auditd
 
 - name: Generate auditd
-  become: yes
-  ansible.builtin.command: augenrules
+  command: augenrules
 
 - name: Reload systemd
-  become: yes
   systemd:
-    daemon_reload: yes
+    daemon_reload: true
 
 - name: Update cracklib debian
-  become: yes
-  ansible.builtin.command: update-cracklib
+  command: update-cracklib
