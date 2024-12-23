@@ -2,9 +2,10 @@ all:
   hosts:
     internal-network:
       ansible_host: 1.1.1.1
-      ansible_port: 22
+      ansible_port: 3122
       ansible_user: root
     external-network:
       ansible_host: 1.1.1.2
-      ansible_port: 22
+      ansible_port: 3122
       ansible_user: root
+
