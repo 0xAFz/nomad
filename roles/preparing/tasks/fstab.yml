@@ -1,0 +1,17 @@
+---
+- name: Remove /tmp from fstab
+  become: true
+  mount:
+    path: /tmp
+    state: absent
+  tags:
+    - fstab
+
+- name: Remove floppy from fstab
+  become: true
+  lineinfile:
+    path: /etc/fstab
+    state: absent
+    regexp: '^(.*)floppy(.*)$'
+  tags:
+    - fstab

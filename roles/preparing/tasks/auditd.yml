@@ -1,0 +1,115 @@
+---
+- name: Set debian audit grub cmdline
+  become: true
+  lineinfile:
+    line: 'GRUB_CMDLINE_LINUX="$GRUB_CMDLINE_LINUX {{ grub_audit_cmdline }} {{ grub_audit_backlog_cmdline }}"'
+    dest: /etc/default/grub.d/99-hardening-audit.cfg
+    state: present
+    create: true
+    mode: 0755
+    owner: root
+    group: root
+
+- name: Set audit action_mail_acct
+  become: true
+  lineinfile:
+    regexp: "^action_mail_acct ="
+    line: "action_mail_acct = {{ auditd_action_mail_acct }}"
+    dest: /etc/audit/auditd.conf
+    mode: 0640
+    state: present
+    create: no
+
+- name: Set audit admin_space_left_action
+  become: true
+  lineinfile:
+    regexp: "^admin_space_left_action = "
+    line: "admin_space_left_action = {{ auditd_admin_space_left_action }}"
+    dest: /etc/audit/auditd.conf
+    mode: 0640
+    state: present
+    create: no
+
+- name: Slllaudit disk_error_action
+  become: true
+  lineinfile:
+    regexp: "^disk_error_action ="
+    line: "disk_error_action = {{ auditd_disk_error_action }}"
+    dest: /etc/audit/auditd.conf
+    mode: 0640
+    state: present
+    create: 'no'
+
+- name: Set audit disk_full_action
+  become: true
+  lineinfile:
+    regexp: "^disk_full_action ="
+    line: "disk_full_action = {{ auditd_disk_full_action }}"
+    dest: /etc/audit/auditd.conf
+    mode: 0640
+    state: present
+    create: no
+
+- name: Set audit max_log_file
+  become: true
+  lineinfile:
+    regexp: "^max_log_file ="
+    line: "max_log_file = {{ auditd_max_log_file }}"
+    dest: /etc/audit/auditd.conf
+    mode: 0640
+    state: present
+    create: no
+
+- name: Set audit max_log_file_action
+  become: true
+  lineinfile:
+    regexp: "^max_log_file_action ="
+    line: "max_log_file_action = {{ auditd_max_log_file_action }}"
+    dest: /etc/audit/auditd.conf
+    mode: 0640
+    state: present
+    create: no
+
+- name: Set audit num_logs
+  become: true
+  lineinfile:
+    regexp: "^num_logs ="
+    line: "num_logs = {{ auditd_num_logs }}"
+    dest: /etc/audit/auditd.conf
+    mode: 0640
+    state: present
+    create: no
+
+- name: Set audit space_left
+  become: true
+  lineinfile:
+    regexp: "^space_left ="
+    line: "space_left = {{ auditd_space_left }}"
+    dest: /etc/audit/auditd.conf
+    mode: 0640
+    state: present
+    create: no
+
+- name: Set audit space_left_action
+  become: true
+  lineinfile:
+    regexp: "^space_left_action ="
+    line: "space_left_action = {{ auditd_space_left_action }}"
+    dest: /etc/audit/auditd.conf
+    mode: 0640
+    state: present
+    create: no
+
+- name: Copy auditd hardening rules to remote server 
+  become: true
+  template:
+    src: auditd.j2
+    dest: /etc/audit/rules.d/hardening.rules
+    backup: true
+    mode: 0600
+    owner: root
+    group: root
+  when: auditd_apply_audit_rules | bool
+  notify:
+    - Generate auditd
+    - Restart auditd

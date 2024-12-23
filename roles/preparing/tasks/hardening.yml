@@ -1,0 +1,51 @@
+---
+- name: Stop and disable ufw service
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+  ignore_errors: true
+
+- name: Stop and disable postfix service
+  service:
+    name: postfix
+    state: stopped
+    enabled: no
+  ignore_errors: true
+
+- name: Make timeout configuration file
+  template:
+    src: timeout.j2
+    dest: /etc/profile.d/timeout-settings.sh
+
+- name: Copy ssh banner file
+  copy:
+    src: ssh_banner
+    dest: /etc/issue
+
+- name: Make sshd configuration file
+  template:
+    src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
+  notify: Restart ssh
+
+- name: Make iptables configuration file
+  template:
+    src: iptables.j2
+    dest: /etc/iptables/rules.v4
+  tags: iptables
+
+- name: Restore iptables state
+  become: true
+  shell: iptables-restore < /etc/iptables/rules.v4
+  async: 45
+  poll: 15
+  ignore_errors: true
+  notify: Restart iptables
+  tags: iptables
+
+- name: Make fail2ban configuration file
+  template:
+    src: fail2ban.j2
+    dest: /etc/fail2ban/jail.local
+  notify: Restart fail2ban

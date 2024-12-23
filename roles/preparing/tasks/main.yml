@@ -1,0 +1,36 @@
+---
+- name: Install packages
+  import_tasks: packages.yml
+  tags: packages
+
+- name: Change limits.conf
+  import_tasks: limits.yml
+  tags: hardening
+
+- name: Configure sshd, iptabels and ...
+  import_tasks: hardening.yml
+  tags: hardening, firewall
+
+- name: tcp wrappers configure
+  import_tasks: tcpwrappers.yml
+  tags: hardening
+
+- name: Confiugre audit log
+  import_tasks: auditd.yml
+  tags: hardening
+
+- name: Change fstab
+  import_tasks: fstab.yml
+  tags: hardening
+
+- name: Confiugre resolved.conf
+  import_tasks: resolved.yml
+  tags: hardening
+
+- name: Confiugre logging
+  import_tasks: logging.yml
+  tags: hardening
+
+- name: Change sysctl.conf
+  import_tasks: sysctl.yml
+  tags: sysctl

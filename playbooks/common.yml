@@ -2,5 +2,6 @@
 - hosts: all
   become: true
   roles:
+    - ../roles/preparing
     - ../roles/common
     - ../roles/xui

@@ -1,0 +1,22 @@
+---
+- name: Configure systemd resolved.conf
+  become: true
+  template:
+    src: resolved.conf.j2
+    dest: /etc/systemd/resolved.conf
+    backup: true
+    mode: 0644
+    owner: root
+    group: root
+  notify:
+    - Reload systemd
+
+- name: Configure resolv.conf
+  become: true
+  template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+    backup: true
+    mode: 0644
+    owner: root
+    group: root

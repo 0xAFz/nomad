@@ -1,17 +1,4 @@
 ---
-- name: Install basic tools
-  apt:
-    update_cache: yes
-    name:
-      - curl
-      - wget
-      - vim
-      - htop
-      - ca-certificates
-      - sqlite3
-      - iptables-persistent
-    state: present
-
 - name: Create Nomad config directory
   file:
     path: "{{ config_dir }}/bin"

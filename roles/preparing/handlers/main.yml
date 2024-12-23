@@ -1,0 +1,38 @@
+- name: Restart ssh
+  systemd:
+    name: ssh
+    state: restarted
+
+- name: Restart iptables
+  systemd:
+    name: iptables
+    state: restarted
+
+- name: Restart fail2ban
+  systemd:
+    name: fail2ban
+    state: restarted
+
+- name: Restart ntp
+  systemd:
+    name: ntp
+    state: restarted
+
+- name: Restart auditd
+  become: yes
+  ansible.builtin.command: service auditd restart
+  args:
+    warn: false
+
+- name: Generate auditd
+  become: yes
+  ansible.builtin.command: augenrules
+
+- name: Reload systemd
+  become: yes
+  systemd:
+    daemon_reload: yes
+
+- name: Update cracklib debian
+  become: yes
+  ansible.builtin.command: update-cracklib
