@@ -41,10 +41,14 @@ sshd_config:
 iptables:
   network_adapter_access:
     - lo
-  #tcp_port_access:
+  tcp_port_access:
+    - 8084
+    - 8082
   udp_port_access:
     - 4096
     - 4097
+    - 8084
+    - 8082
   trusted_range:
     - 10.22.22.0/24
     - 10.44.44.0/24
