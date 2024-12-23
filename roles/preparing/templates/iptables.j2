@@ -49,8 +49,8 @@ COMMIT
 {% endfor %}
 {% endif %}
 {% if iptables.trusted_range is defined %}
-{% for range in iptables.trusted_Range %}
--A CHECK_INPUT -s {{ range }} -j ACCEPT -m comment --comment "Allow incoming connections from trusted range."
+{% for cidr in iptables.trusted_range %}
+-A CHECK_INPUT -s {{ cidr }} -j ACCEPT -m comment --comment "Allow incoming connections from trusted range."
 {% endfor %}
 {% endif %}
 -A OUTPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT -m comment --comment "Allow all outgoing related and established connections."
