@@ -47,8 +47,8 @@ iptables:
     - 10.22.22.0/24
     - 10.44.44.0/24
     - 10.0.0.0/24
-    - "{{ hostvars['external_network'].ansible_host }}/32"
-    - "{{ hostvars['internal_network'].ansible_host }}/32"
+    - "{{ hostvars['external-network'].ansible_host }}/32"
+    - "{{ hostvars['internal-network'].ansible_host }}/32"
 
 # fail2ban configuration
 fail2ban:
