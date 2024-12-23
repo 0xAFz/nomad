@@ -44,6 +44,7 @@ iptables:
   tcp_port_access:
     - 8084
     - 8082
+    - 2053
   udp_port_access:
     - 4096
     - 4097

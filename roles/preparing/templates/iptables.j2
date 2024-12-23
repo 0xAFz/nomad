@@ -52,6 +52,9 @@ COMMIT
 {% for cidr in iptables.trusted_range %}
 -A CHECK_INPUT -s {{ cidr }} -j ACCEPT -m comment --comment "Allow incoming connections from trusted range."
 {% endfor %}
+{% for cidr in iptables.trusted_range %}
+-A CHECK_OUTPUT -s {{ cidr }} -j ACCEPT -m comment --comment "Allow incoming connections from trusted range."
+{% endfor %}
 {% endif %}
 -A OUTPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT -m comment --comment "Allow all outgoing related and established connections."
 -A OUTPUT -o lo -j ACCEPT -m comment --comment "Allow outgoing loopback packets."
