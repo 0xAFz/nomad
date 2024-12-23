@@ -45,6 +45,7 @@ iptables:
   # udp_port_access:
   trusted_range:
     - 10.22.22.0/24
+    - 10.44.44.0/24
 
 # fail2ban configuration
 fail2ban:
