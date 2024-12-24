@@ -33,7 +33,7 @@ sshd_config:
   Port: "{{ ansible_port }}"
   ListenAddress: 0.0.0.0
   PermitRootLogin: without-password
-  PasswordAuthentication: "yes"
+  PasswordAuthentication: "no"
   AllowUsers: root
   AllowGroups: root
 
@@ -42,6 +42,7 @@ iptables:
   network_adapter_access:
     - lo
   tcp_port_access:
+    - 3022
     - 8084
     - 8082
     - 2053
