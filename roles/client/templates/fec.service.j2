@@ -6,7 +6,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart={{ config_dir }}/bin/nomad_amd64 -c -r{{ hostvars["external_network"].ansible_host }}:{{ fec_port }} -f{{ fec }} --sub-net {{ fec_subnet }} --tun-dev nomad-fec --keep-reconnect --disable-obscure
+ExecStart={{ config_dir }}/bin/nomad_amd64 -c -r{{ hostvars["external-network"].ansible_host }}:{{ fec_port }} -f{{ fec }} --sub-net {{ fec_subnet }} --tun-dev nomad-fec --keep-reconnect --disable-obscure
 Restart=always
 RestartSec=3
 
