@@ -42,7 +42,6 @@ iptables:
   network_adapter_access:
     - lo
   tcp_port_access:
-    - 3022
     - 8084
     - 8082
     - 2053
