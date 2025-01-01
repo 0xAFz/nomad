@@ -17,7 +17,6 @@ ListenAddress {{ sshd_config.ListenAddress | default('0.0.0.0') }}
 LogLevel VERBOSE
 
 # Authentication:
-
 #LoginGraceTime 2m
 PermitRootLogin {{ sshd_config.PermitRootLogin | default('without-password') }}
 #StrictModes yes
@@ -84,7 +83,7 @@ TCPKeepAlive no
 Compression no
 #ClientAliveInterval 0
 ClientAliveCountMax 2
-#UseDNS no
+UseDNS no
 #PidFile /var/run/sshd.pid
 #MaxStartups 10:30:100
 #PermitTunnel no
