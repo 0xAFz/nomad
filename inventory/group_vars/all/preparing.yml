@@ -15,7 +15,7 @@ packages:
 - net-tools
 - dnsutils
 - sudo
-- ntp
+#- ntp
 - fail2ban
 - software-properties-common
 - apache2-utils
@@ -23,7 +23,6 @@ packages:
 - telnet
 - axel
 - iptables-persistent
-- ntp
 - auditd
 - libpwquality-common
 - cracklib-runtime
