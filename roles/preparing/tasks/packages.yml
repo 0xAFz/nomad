@@ -12,22 +12,3 @@
     # force_apt_get: true
     update_cache: true
 
-- name: Set hostname
-  hostname:
-    name: "{{ inventory_hostname }}"
-
-- name: Fix /etc/hosts
-  become: true
-  template:
-    src: hosts.j2
-    dest: /etc/hosts
-
-- name: Set SSH banner
-  become: true
-  copy:
-    src: ssh_banner
-    dest: /etc/issue
-    owner: root
-    group: root
-    mode: 0644
-  notify: Restart ssh

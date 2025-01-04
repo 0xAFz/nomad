@@ -18,10 +18,25 @@
     src: timeout.j2
     dest: /etc/profile.d/timeout-settings.sh
 
+- name: Change hostname
+  hostname:
+    name: "{{ inventory_hostname }}"
+
+- name: Copy hosts file
+  become: true
+  template:
+    src: hosts.j2
+    dest: /etc/hosts
+
 - name: Copy ssh banner file
+  become: true
   copy:
     src: ssh_banner
     dest: /etc/issue
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart ssh
 
 - name: Make sshd configuration file
   template:
