@@ -91,12 +91,21 @@ limit_nproc_soft: 512
 
 # sysctll configuration variables
 sysctl_config:
-  net.core.netdev_max_backlog: 5000
+  net.ipv4.tcp_rmem: "4096 87380 16777216"
+  net.ipv4.tcp_wmem: "4096 65536 16777216"
+  net.ipv4.tcp_fastopen: 3
+  net.core.rmem_default: 262144
+  net.core.wmem_default: 262144
+  net.core.rmem_max: 16777216
+  net.core.wmem_max: 16777216
+  net.core.netdev_max_backlog: 10000
+  net.unix.max_dgram_qlen: 10000
   net.ipv4.udp_rmem_min: 8192
+  net.ipv4.udp_wmem_min: 8192
   net.ipv4.udp_l3mdev_accept: 1
   net.ipv4.tcp_nodelay: 1
   net.ipv4.tcp_low_latency: 1
-  net.ipv4.ip_default_ttl: 128
+  net.ipv4.ip_default_ttl: 64
   net.ipv4.tcp_congestion_control: bbr
   net.ipv4.icmp_echo_ignore_all: 0
   net.ipv4.ip_forward: 1
