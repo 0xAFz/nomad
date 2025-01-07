@@ -78,13 +78,25 @@ ping 10.22.22.2
 ```bash
 ping 10.44.44.2
 ```
-5. Open **3x-UI** panel in your browser and add your inbounds
+5. Open **3x-UI** panel in browser
+
+> [!WARNING]
+> For the security reasons, we blocked all public traffic to panels
+
+### How to access the panels?
+You should open a `SSH` tunnel between local machine and server
 ```bash
-# Replace $YOUR_PUBLIC_IP with your servers public IP and $XUI_PORT with port you set in ``inventory/group_vars/all/xui.yml``
-http://$YOUR_PUBLIC_IP:$XUI_PORT
-# Example
-http://192.168.1.100:2053
+# forwarding local port 8080 to server 127.0.0.1:2053
+ssh -L 8080:127.0.0.1:2053 user@ip
 ```
+```bash
+# now you can open this url in your browser
+http://localhost:8080
+```
+> [!NOTE]
+> To be able to do SSH port forwarding, you must allow tcp forwarding `AllowTcpForwarding yes` in `/etc/ssh/sshd_config`  
+> By default we enabled it in the preparing tasks
+
 # Credits
 - [tinyfecVPN](https://github.com/wangyu-/tinyfecVPN)
 - [EasyTier](https://github.com/EasyTier/EasyTier)
