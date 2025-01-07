@@ -1,6 +1,13 @@
 ---
-- name: Server tasks
-  import_playbook: server.yml
+- name: Common tasks for every playbooks
+  import_playbook: common.yml
 
-- name: Client tasks
-  import_playbook: client.yml
+- hosts: external-network
+  become: true
+  roles:
+    - ../roles/server
+
+- hosts: internal-network
+  become: true
+  roles:
+    - ../roles/client
