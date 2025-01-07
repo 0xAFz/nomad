@@ -1,7 +1,7 @@
 #!/bin/bash
 
-DB_FILE="/etc/x-ui/x-ui.db"
-CONFIG_TABLE="settings"
+DB_PATH="/etc/x-ui/x-ui.db"
+
 NEW_CONFIG='{
   "log": {
     "access": "none",
@@ -81,6 +81,6 @@ NEW_CONFIG='{
   "stats": {}
 }'
 
-sqlite3 $DB_FILE "UPDATE $CONFIG_TABLE SET value = '$NEW_CONFIG' WHERE key = 'xrayTemplateConfig';"
+sqlite3 $DB_PATH "UPDATE settings SET value = '$NEW_CONFIG' WHERE key = 'xrayTemplateConfig';"
 
 echo "xrayTemplateConfig updated successfully."
