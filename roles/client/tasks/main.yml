@@ -58,3 +58,10 @@
   when: enable_easytier
   tags: 
     - easytier
+
+- name: Add client outbounds
+  script: files/outbounds.sh
+  args:
+    executable: /bin/bash
+  notify: 
+    - restart x-ui
