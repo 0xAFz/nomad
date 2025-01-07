@@ -58,3 +58,10 @@
   when: enable_easytier
   tags: 
     - easytier
+
+- name: Add server inbounds
+  script: files/inbounds.sh
+  args:
+    executable: /bin/bash
+  notify: 
+    - restart x-ui
