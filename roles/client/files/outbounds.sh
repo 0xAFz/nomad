@@ -119,7 +119,6 @@ NEW_CONFIG='{
   "stats": {}
 }'
 
-sqlite3 $DB_PATH "INSERT INTO outbound_traffics (tag) VALUES ('Nomad');"
 sqlite3 $DB_PATH "UPDATE settings SET value = '$NEW_CONFIG' WHERE key = 'xrayTemplateConfig';"
 
 echo "xrayTemplateConfig updated successfully."
