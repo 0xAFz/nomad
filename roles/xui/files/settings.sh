@@ -81,6 +81,6 @@ NEW_CONFIG='{
   "stats": {}
 }'
 
-sqlite3 $DB_PATH "UPDATE settings SET value = '$NEW_CONFIG' WHERE key = 'xrayTemplateConfig';"
+sqlite3 $DB_PATH "UPDATE settings SET value = '$NEW_CONFIG' WHERE key = 'xrayTemplateConfig';" && systemctl restart x-ui
 
 echo "xrayTemplateConfig updated successfully."
