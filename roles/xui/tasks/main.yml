@@ -20,10 +20,3 @@
     executable: /bin/bash
   notify: 
     - restart x-ui
-
-- name: Allow private IP routing
-  script: files/settings.sh
-  args:
-    executable: /bin/bash
-  notify: 
-    - restart x-ui
