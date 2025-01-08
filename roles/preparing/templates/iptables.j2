@@ -27,7 +27,7 @@ COMMIT
 :CHECK_INPUT - [0:0]
 :CHECK_OUTPUT - [0:0]
 
--A INPUT -p tcp --dport {{ xui_port }} ! -s 127.0.0.1 -j DROP -m comment --comment "Drop all incoming requests to x-ui except loopback."
+-A INPUT -p tcp --dport {{ xui_port }} ! -s 127.0.0.1 -j DROP -m comment --comment "Drop all incoming packets to x-ui except loopback."
 -A INPUT -i lo -j ACCEPT -m comment --comment "Allow incoming loopback packets."
 -A INPUT -p icmp -j ACCEPT -m comment --comment "Allow incoming icmp packets."
 -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT -m comment --comment "Allow incoming related and established connections."
