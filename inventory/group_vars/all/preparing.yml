@@ -26,6 +26,7 @@ packages:
 - auditd
 - libpwquality-common
 - cracklib-runtime
+- python3-requests
 
 # sshd configuration
 sshd_config:
