@@ -1,4 +1,5 @@
 ---
+xui_listen: 127.0.0.1
 xui_port: 2053
 
 xui_username: "{{ lookup('env', 'XUI_USERNAME') | default('admin') }}"
