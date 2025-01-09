@@ -89,9 +89,15 @@ limit_nofile_hard: 1024
 limit_nofile_soft: 512
 limit_nproc_hard: 1024
 limit_nproc_soft: 512
+limit_file_soft: 1024
+limit_file_hard: 2048
 
 # sysctll configuration variables
 sysctl_config:
+  #vm.nr_hugepages: 32
+  net.core.somaxconn: 8192
+  net.ipv4.tcp_fin_timeout: 30
+  net.ipv4.tcp_max_syn_backlog: 2048
   net.ipv4.tcp_rmem: "4096 87380 16777216"
   net.ipv4.tcp_wmem: "4096 65536 16777216"
   #net.ipv4.tcp_low_latency: 1
@@ -101,6 +107,7 @@ sysctl_config:
   net.core.rmem_max: 16777216
   net.core.wmem_max: 16777216
   net.core.netdev_max_backlog: 10000
+  net.core.optmem_max: 131072
   net.unix.max_dgram_qlen: 10000
   net.ipv4.udp_rmem_min: 8192
   net.ipv4.udp_wmem_min: 8192
