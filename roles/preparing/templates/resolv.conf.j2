@@ -1,2 +1,6 @@
-nameserver 8.8.8.8
-nameserver 1.1.1.1
+# {{ ansible_managed }}
+
+nameserver {{ dns_v4 }}
+nameserver {{ dns_v4_fallback }}
+nameserver {{ dns_v6 }}
+nameserver {{ dns_v6_fallback }}
