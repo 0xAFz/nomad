@@ -1,4 +1,6 @@
 ---
+easytier_version: v2.1.1
+
 easytier_port: 4097 
 
 ## supported protocols: udp, tcp, ws, wss

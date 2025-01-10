@@ -16,20 +16,38 @@
     mode: '0755'
   when: enable_fec
 
-- name: Copy EasyTier Core binary to servers
-  copy:
-    src: files/easytier-core
-    dest: "{{ config_dir }}/bin/easytier-core"
-    owner: root
-    group: root
+- name: Set EasyTier download URL
+  set_fact:
+    easytier_url: "https://github.com/EasyTier/EasyTier/releases/download/{{ easytier_version }}/easytier-linux-{{ ansible_architecture }}-{{ easytier_version }}.zip"
+    easytier_dir: "easytier-linux-{{ ansible_architecture }}"
+  when: enable_easytier
+
+- name: Download EasyTier binary
+  get_url:
+    url: "{{ easytier_url }}"
+    dest: "/tmp/{{ easytier_dir }}.zip"
     mode: '0755'
   when: enable_easytier
 
-- name: Copy EasyTier Cli binary to servers
+- name: Extract EasyTier binaries
+  unarchive:
+    src: "/tmp/{{ easytier_dir }}.zip"
+    dest: "/tmp/"
+    remote_src: true
+  when: enable_easytier
+
+- name: Move easytier-core binary to {{ config_dir }}/bin
   copy:
-    src: files/easytier-cli
-    dest: "{{ config_dir }}/bin/easytier-cli"
-    owner: root
-    group: root
+    src: "/tmp/{{ easytier_dir }}/easytier-core"
+    dest: "{{ config_dir }}/bin/easytier-core"
     mode: '0755'
+    remote_src: true
+  when: enable_easytier
+
+- name: Move easytier-cli binary to {{ config_dir }}/bin
+  copy:
+    src: "/tmp/{{ easytier_dir }}/easytier-cli"
+    dest: "{{ config_dir }}/bin/easytier-cli"
+    mode: '0755'
+    remote_src: true
   when: enable_easytier
