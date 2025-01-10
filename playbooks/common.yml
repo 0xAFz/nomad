@@ -2,6 +2,6 @@
 - hosts: all
   become: true
   roles:
-    - ../roles/preparing
-    - ../roles/common
-    - ../roles/xui
+    - { role: ../roles/preparing, tags: preparing }
+    - { role: ../roles/common, tags: common }
+    - { role: ../roles/xui, tags: xui }

@@ -5,9 +5,9 @@
 - hosts: external-network
   become: true
   roles:
-    - ../roles/server
+    - { role: ../roles/server, tags: server }
 
 - hosts: internal-network
   become: true
   roles:
-    - ../roles/client
+    - { role: ../roles/client, tags: client }

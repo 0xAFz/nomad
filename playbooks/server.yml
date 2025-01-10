@@ -5,4 +5,4 @@
 - hosts: external-network
   become: true
   roles:
-    - ../roles/server
+    - { role: ../roles/server, tags: server }
