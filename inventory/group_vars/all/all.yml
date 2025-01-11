@@ -10,3 +10,5 @@ config_dir: /opt/nomad
 ##
 enable_fec: false         # Set to true to enable the Nomad FEC service
 enable_easytier: true     # Set to true to enable the Nomad EasyTier service
+
+enable_xui: true          # Set to true to install the 3x-ui panel

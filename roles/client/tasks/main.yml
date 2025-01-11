@@ -1,60 +1,10 @@
 ---
-- name: Create Nomad FEC systemd service
-  template:
-    src: fec.service.j2
-    dest: /etc/systemd/system/nomad-fec.service
-    owner: root
-    group: root
-    mode: '0644'
-  when: enable_fec
-  tags: 
-    - fec
-
-- name: Create Nomad EasyTier systemd service
-  template:
-    src: easytier.service.j2
-    dest: /etc/systemd/system/nomad-easytier.service
-    owner: root
-    group: root
-    mode: '0644'
+- name: Configure EasyTier
+  import_tasks: easytier.yml
   when: enable_easytier
-  tags: 
-    - easytier
+  tags: easytier
 
-- name: Enable Nomad FEC service
-  systemd:
-    name: nomad-fec
-    state: started
-    daemon_reload: true
-    enabled: true
+- name: Configure TinyFEC
+  import_tasks: fec.yml
   when: enable_fec
-  tags: 
-    - fec
-
-- name: Enable Nomad EasyTier service
-  systemd:
-    name: nomad-easytier
-    state: started
-    daemon_reload: true
-    enabled: true
-  when: enable_easytier
-  tags: 
-    - easytier
-
-- name: Restart Nomad FEC service
-  systemd:
-    name: nomad-fec
-    state: restarted
-    daemon_reload: true
-  when: enable_fec
-  tags: 
-    - fec
-
-- name: Restart Nomad EasyTier service
-  systemd:
-    name: nomad-easytier
-    state: restarted
-    daemon_reload: true
-  when: enable_easytier
-  tags: 
-    - easytier
+  tags: fec

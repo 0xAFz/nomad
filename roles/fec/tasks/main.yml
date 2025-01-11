@@ -1,0 +1,8 @@
+---
+- name: Copy TinyFEC binary to servers
+  copy:
+    src: files/nomad_amd64
+    dest: "{{ config_dir }}/bin/nomad_amd64"
+    owner: root
+    group: root
+    mode: '0755'

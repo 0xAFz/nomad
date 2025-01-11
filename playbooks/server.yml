@@ -1,8 +1,10 @@
 ---
-- name: Common tasks for every playbooks
-  import_playbook: common.yml
+- name: Preparing tasks for every playbooks
+  import_playbook: preparing.yml
 
 - hosts: external-network
   become: true
   roles:
+    - { role: ../roles/easytier, tags: easytier, when: enable_easytier }
+    - { role: ../roles/fec, tags: fec, when: enable_fec }
     - { role: ../roles/server, tags: server }

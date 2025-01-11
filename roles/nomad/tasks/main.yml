@@ -1,0 +1,8 @@
+---
+- name: Create Nomad config directory
+  file:
+    path: "{{ config_dir }}/bin"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'

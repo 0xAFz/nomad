@@ -1,0 +1,21 @@
+---
+- name: Create Nomad FEC systemd service
+  template:
+    src: fec.service.j2
+    dest: /etc/systemd/system/nomad-fec.service
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Enable Nomad FEC service
+  systemd:
+    name: nomad-fec
+    state: started
+    daemon_reload: true
+    enabled: true
+
+- name: Restart Nomad FEC service
+  systemd:
+    name: nomad-fec
+    state: restarted
+    daemon_reload: true

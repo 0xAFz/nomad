@@ -1,40 +1,20 @@
 ---
-- name: Create Nomad config directory
-  file:
-    path: "{{ config_dir }}/bin"
-    state: directory
-    owner: root
-    group: root
-    mode: '0755'
-
-- name: Copy FEC binary to servers
-  copy:
-    src: files/nomad_amd64
-    dest: "{{ config_dir }}/bin/nomad_amd64"
-    owner: root
-    group: root
-    mode: '0755'
-  when: enable_fec
-
 - name: Set EasyTier download URL
   set_fact:
     easytier_url: "https://github.com/EasyTier/EasyTier/releases/download/{{ easytier_version }}/easytier-linux-{{ ansible_architecture }}-{{ easytier_version }}.zip"
     easytier_dir: "easytier-linux-{{ ansible_architecture }}"
-  when: enable_easytier
 
 - name: Download EasyTier binary
   get_url:
     url: "{{ easytier_url }}"
     dest: "/tmp/{{ easytier_dir }}.zip"
     mode: '0755'
-  when: enable_easytier
 
 - name: Extract EasyTier binaries
   unarchive:
     src: "/tmp/{{ easytier_dir }}.zip"
     dest: "/tmp/"
     remote_src: true
-  when: enable_easytier
 
 - name: Move easytier-core binary to {{ config_dir }}/bin
   copy:
@@ -42,7 +22,6 @@
     dest: "{{ config_dir }}/bin/easytier-core"
     mode: '0755'
     remote_src: true
-  when: enable_easytier
 
 - name: Move easytier-cli binary to {{ config_dir }}/bin
   copy:
@@ -50,4 +29,3 @@
     dest: "{{ config_dir }}/bin/easytier-cli"
     mode: '0755'
     remote_src: true
-  when: enable_easytier

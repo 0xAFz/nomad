@@ -1,0 +1,8 @@
+---
+- name: Preparing tasks for every playbooks
+  import_playbook: preparing.yml
+
+- hosts: all
+  become: true
+  roles:
+    - { role: ../roles/xui, tags: xui, when: enable_xui }

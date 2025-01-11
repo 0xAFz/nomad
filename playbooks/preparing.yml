@@ -3,5 +3,3 @@
   become: true
   roles:
     - { role: ../roles/preparing, tags: preparing }
-    - { role: ../roles/common, tags: common }
-    - { role: ../roles/xui, tags: xui }
