@@ -10,9 +10,13 @@
 - hosts: external-network
   become: true
   roles:
+    - { role: ../roles/easytier, tags: easytier, when: enable_easytier }
+    - { role: ../roles/fec, tags: fec, when: enable_fec }
     - { role: ../roles/server, tags: server }
 
 - hosts: internal-network
   become: true
   roles:
+    - { role: ../roles/easytier, tags: easytier, when: enable_easytier }
+    - { role: ../roles/fec, tags: fec, when: enable_fec }
     - { role: ../roles/client, tags: client }
