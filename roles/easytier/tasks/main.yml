@@ -1,4 +1,12 @@
 ---
+- name: Create Nomad config directory
+  file:
+    path: "{{ config_dir }}/bin"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
 - name: Set EasyTier download URL
   set_fact:
     easytier_url: "https://github.com/EasyTier/EasyTier/releases/download/{{ easytier_version }}/easytier-linux-{{ ansible_architecture }}-{{ easytier_version }}.zip"
