@@ -30,7 +30,7 @@
     state: present
     create: no
 
-- name: Slllaudit disk_error_action
+- name: Set audit disk_error_action
   become: true
   lineinfile:
     regexp: "^disk_error_action ="
