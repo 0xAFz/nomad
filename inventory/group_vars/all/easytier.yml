@@ -1,5 +1,5 @@
 ---
-easytier_version: v2.0.3
+easytier_version: v2.1.1
 
 easytier_port: 4097 
 
@@ -9,8 +9,8 @@ easytier_protocol: udp
 easytier_server_local_ip: 10.44.44.1
 easytier_client_local_ip: 10.44.44.2
 
-## generate a random secret: openssl rand -base64 8
-easytier_secret: u7734pu1oQ8=
+## generate a random secret: openssl rand -hex 6
+easytier_secret: 5f67777d658f
 
 easytier_encryption: false
 
