@@ -12,7 +12,7 @@ easytier_client_local_ip: 10.44.44.2
 ## generate a random secret: openssl rand -hex 6
 easytier_secret: 5f67777d658f
 
-easytier_encryption: true
+easytier_encryption: false
 
 easytier_multithread: true
 
