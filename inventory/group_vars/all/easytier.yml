@@ -14,6 +14,6 @@ easytier_secret: 5f67777d658f
 
 easytier_encryption: false
 
-easytier_multithread: false
+easytier_multithread: true
 
 easytier_ipv6: false
