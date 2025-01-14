@@ -5,6 +5,6 @@
   tags: easytier
 
 - name: Configure TinyFEC
-  import_tasks: fec.yml
-  when: enable_fec
-  tags: fec
+  import_tasks: tinyfec.yml
+  when: enable_tinyfec
+  tags: tinyfec

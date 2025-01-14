@@ -1,21 +1,21 @@
 ---
-- name: Create Nomad EasyTier systemd service
+- name: Create EasyTier systemd service
   template:
     src: easytier.service.j2
-    dest: /etc/systemd/system/nomad-easytier.service
+    dest: /etc/systemd/system/easytier.service
     owner: root
     group: root
     mode: '0644'
 
-- name: Enable Nomad EasyTier service
+- name: Enable EasyTier service
   systemd:
-    name: nomad-easytier
+    name: easytier
     state: started
     daemon_reload: true
     enabled: true
 
-- name: Restart Nomad EasyTier service
+- name: Restart EasyTier service
   systemd:
-    name: nomad-easytier
+    name: easytier
     state: restarted
     daemon_reload: true

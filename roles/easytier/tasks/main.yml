@@ -1,7 +1,7 @@
 ---
-- name: Create Nomad config directory
+- name: Create EasyTier directory
   file:
-    path: "{{ config_dir }}/bin"
+    path: "{{ easytier_dir }}"
     state: directory
     owner: root
     group: root
@@ -10,30 +10,40 @@
 - name: Set EasyTier download URL
   set_fact:
     easytier_url: "https://github.com/EasyTier/EasyTier/releases/download/{{ easytier_version }}/easytier-linux-{{ ansible_architecture }}-{{ easytier_version }}.zip"
-    easytier_dir: "easytier-linux-{{ ansible_architecture }}"
+    easytier_temp_dir: "/tmp/easytier-linux-{{ ansible_architecture }}"
 
 - name: Download EasyTier binary
   get_url:
     url: "{{ easytier_url }}"
-    dest: "/tmp/{{ easytier_dir }}.zip"
+    dest: "{{ easytier_temp_dir }}.zip"
     mode: '0755'
 
 - name: Extract EasyTier binaries
   unarchive:
-    src: "/tmp/{{ easytier_dir }}.zip"
+    src: "{{ easytier_temp_dir }}.zip"
     dest: "/tmp/"
     remote_src: true
 
-- name: Move easytier-core binary to {{ config_dir }}/bin
+- name: Move easytier-core binary to {{ easytier_dir }}
   copy:
-    src: "/tmp/{{ easytier_dir }}/easytier-core"
-    dest: "{{ config_dir }}/bin/easytier-core"
+    src: "{{ easytier_temp_dir }}/easytier-core"
+    dest: "{{ easytier_dir }}/easytier-core"
     mode: '0755'
     remote_src: true
 
-- name: Move easytier-cli binary to {{ config_dir }}/bin
+- name: Move easytier-cli binary to {{ easytier_dir }}
   copy:
-    src: "/tmp/{{ easytier_dir }}/easytier-cli"
-    dest: "{{ config_dir }}/bin/easytier-cli"
+    src: "{{ easytier_temp_dir }}/easytier-cli"
+    dest: "{{ easytier_dir }}/easytier-cli"
     mode: '0755'
     remote_src: true
+
+- name: Delete EasyTier downloaded zip file
+  file:
+    path: "{{ easytier_temp_dir }}.zip"
+    state: absent
+
+- name: Delete EasyTier extracted directory
+  file:
+    path: "{{ easytier_temp_dir }}"
+    state: absent
