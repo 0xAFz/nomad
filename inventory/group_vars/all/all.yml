@@ -5,10 +5,13 @@ config_dir: /opt/nomad
 ## Define which services should run on your servers.
 ## Set `true` to enable a service or `false` to disable it.
 ##
-## If both `enable_fec` and `enable_easytier` are set to `true`,
+## If both `enable_tinyfec` and `enable_easytier` are set to `true`,
 ## both services will be deployed and started on the servers.
 ##
-enable_fec: false         # Set to true to enable the Nomad FEC service
-enable_easytier: true     # Set to true to enable the Nomad EasyTier service
+enable_tinyfec: false     # Set to true to enable the tinyFEC service (Only X86_64)
 
-enable_xui: true          # Set to true to install the 3x-ui panel
+enable_easytier: true     # Set to true to enable the EasyTier service
+
+enable_xray: true         # Set to true to install the xray core (Only X86_64)
+
+enable_xui: false         # Set to true to install the 3x-ui panel
