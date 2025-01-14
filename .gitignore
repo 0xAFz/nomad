@@ -2,3 +2,4 @@
 hosts.yml
 .venv/
 .venv
+config.json
