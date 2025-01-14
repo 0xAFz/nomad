@@ -1,0 +1,15 @@
+---
+- name: Check if config.json exists
+  stat:
+    path: files/config.json
+  register: config_file
+  delegate_to: localhost
+
+- name: Copy Xray custom config
+  copy:
+    src: config.json
+    dest: "{{ xray_dir }}/config.json"
+    owner: root
+    group: root
+    mode: "0644"
+  when: config_file.stat.exists

@@ -8,3 +8,8 @@
   import_tasks: tinyfec.yml
   when: enable_tinyfec
   tags: tinyfec
+
+- name: Configure Xray
+  import_tasks: xray.yml
+  when: enable_xray
+  tags: xray
