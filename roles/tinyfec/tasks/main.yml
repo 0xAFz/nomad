@@ -1,0 +1,16 @@
+---
+- name: Create TinyFEC directory
+  file:
+    path: "{{ tinyfec_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Copy TinyFEC binary to {{ tinyfec_dir }}
+  copy:
+    src: files/tinyfec
+    dest: "{{ tinyfec_dir }}"
+    owner: root
+    group: root
+    mode: '0755'
