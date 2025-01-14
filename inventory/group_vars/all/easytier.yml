@@ -5,13 +5,13 @@ easytier_dir: "{{ config_dir }}/easytier"
 
 easytier_port: 4097 
 
-## supported protocols: udp, tcp, ws, wss
+## Supported protocols: udp, tcp, ws, wss
 easytier_protocol: udp
 
 easytier_server_local_ip: 10.44.44.1
 easytier_client_local_ip: 10.44.44.2
 
-## generate a random secret: openssl rand -hex 6
+## Generate a random secret: `openssl rand -hex 6``
 easytier_secret: 5f67777d658f
 
 easytier_encryption: true
