@@ -96,7 +96,7 @@ limit_nofile_soft: 1000000
 limit_nproc_hard: 10000
 limit_nproc_soft: 10000
 
-# sysctll configuration variables
+# ysctll configuration variables
 sysctl_config:
   net.core.somaxconn: 65535
   net.ipv4.tcp_fin_timeout: 10
@@ -111,7 +111,7 @@ sysctl_config:
   net.ipv4.tcp_rmem: "8192 87380 16777216"
   net.ipv4.tcp_wmem: "8192 65536 16777216"
   net.ipv4.tcp_low_latency: 1
-  net.ipv4.tcp_fastopen: 0
+  net.ipv4.tcp_fastopen: 3
   net.core.rmem_default: 262144
   net.core.wmem_default: 262144
   net.core.rmem_max: 16777216
