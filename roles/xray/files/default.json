@@ -1,0 +1,59 @@
+{
+    "log": {
+        "access": "none",
+        "dnsLog": false,
+        "error": "",
+        "loglevel": "warning",
+        "maskAddress": ""
+    },
+    "routing": {
+        "domainStrategy": "AsIs",
+        "rules": [
+            {
+                "type": "field",
+                "outboundTag": "blocked",
+                "protocol": [
+                    "bittorrent"
+                ]
+            }
+        ]
+    },
+    "dns": null,
+    "inbounds": [],
+    "outbounds": [
+        {
+            "tag": "direct",
+            "protocol": "freedom",
+            "settings": {
+                "domainStrategy": "AsIs",
+                "redirect": "",
+                "noises": []
+            }
+        },
+        {
+            "tag": "blocked",
+            "protocol": "blackhole",
+            "settings": {}
+        }
+    ],
+    "transport": null,
+    "policy": {
+        "levels": {
+            "0": {
+                "statsUserDownlink": true,
+                "statsUserUplink": true
+            }
+        },
+        "system": {
+            "statsInboundDownlink": true,
+            "statsInboundUplink": true,
+            "statsOutboundDownlink": true,
+            "statsOutboundUplink": true
+        }
+    },
+    "stats": {},
+    "reverse": null,
+    "fakedns": null,
+    "observatory": null,
+    "burstObservatory": null
+}

@@ -1,0 +1,4 @@
+---
+xray_version: "25.1.1"
+
+xray_dir: "{{ config_dir }}/xray"

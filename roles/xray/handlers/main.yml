@@ -1,0 +1,5 @@
+---
+- name: restart xray
+  systemd:
+    name: xray
+    state: restarted
