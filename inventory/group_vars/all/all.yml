@@ -8,11 +8,15 @@ config_dir: /opt/nomad
 ## If both `enable_tinyfec` and `enable_easytier` are set to `true`,
 ## both services will be deployed and started on the servers.
 ##
+
 ## Set to true to enable the tinyFEC service (Only X86_64)
-enable_tinyfec: false       
+enable_tinyfec: false
+
 ## Set to true to enable the EasyTier service
-enable_easytier: true       
+enable_easytier: true
+
 ## Set to true to install the xray core (Only X86_64)
-enable_xray: false          
+enable_xray: false
+
 ## Set to true to install the 3x-ui panel
-enable_xui: true            
+enable_xui: true
