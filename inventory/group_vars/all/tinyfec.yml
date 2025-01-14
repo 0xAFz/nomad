@@ -1,0 +1,8 @@
+---
+tinyfec_dir: "{{ config_dir }}/tinyfec"
+
+tinyfec_port: 4096
+
+tinyfec_subnet: 10.22.22.0
+
+fec: "20:10"
