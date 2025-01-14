@@ -18,4 +18,5 @@
   systemd:
     name: xray
     state: restarted
+  when: config_file.stat.exists
 
