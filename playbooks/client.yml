@@ -6,5 +6,5 @@
   become: true
   roles:
     - { role: ../roles/easytier, tags: easytier, when: enable_easytier }
-    - { role: ../roles/fec, tags: fec, when: enable_fec }
+    - { role: ../roles/tinyfec, tags: tinyfec, when: enable_tinyfec }
     - { role: ../roles/client, tags: client }
