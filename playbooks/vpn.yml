@@ -2,21 +2,22 @@
 - name: Preparing tasks for every playbooks
   import_playbook: preparing.yml
 
-- hosts: all
-  become: true
-  roles:
-    - { role: ../roles/xui, tags: xui, when: enable_xui }
-
 - hosts: external-network
   become: true
   roles:
     - { role: ../roles/easytier, tags: easytier, when: enable_easytier }
-    - { role: ../roles/fec, tags: fec, when: enable_fec }
+    - { role: ../roles/tinyfec, tags: tinyfec, when: enable_tinyfec }
     - { role: ../roles/server, tags: server }
 
 - hosts: internal-network
   become: true
   roles:
     - { role: ../roles/easytier, tags: easytier, when: enable_easytier }
-    - { role: ../roles/fec, tags: fec, when: enable_fec }
+    - { role: ../roles/tinyfec, tags: tinyfec, when: enable_tinyfec }
     - { role: ../roles/client, tags: client }
+
+- hosts: all
+  become: true
+  roles:
+    - { role: ../roles/xray, tags: xray, when: enable_xray }
+    - { role: ../roles/xui, tags: xui, when: enable_xui }
