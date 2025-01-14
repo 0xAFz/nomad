@@ -1,6 +1,8 @@
 ---
 easytier_version: v2.1.1
 
+easytier_dir: "{{ config_dir }}/easytier"
+
 easytier_port: 4097 
 
 ## supported protocols: udp, tcp, ws, wss
