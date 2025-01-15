@@ -1,102 +1,307 @@
 # Nomad
 
-**Nomad** is a streamlined VPN setup automation tool designed to establish secure and efficient connections between internal and external networks. It supports two tunneling methods: **tinyfecVPN** and **EasyTier**.  
+Hey there, welcome to the **Nomad Documentation**! 🌟 Nomad is like your best buddy for setting up a secure and low-latency VPN server. But that’s not all—you can also use it in a bunch of other creative ways. Let’s dive in together and see what makes Nomad awesome! 🚀
+
+---
 
 ### Key Features:
-- **Server Setup:** Automates the configuration of two servers—one in the internal network and one in the external network.
-- **OS Hardening:** Implements essential security practices to harden the operating system.
-- **SSH Hardening:** Enhances SSH configuration for increased security.
-- **Firewall Configuration:** Configures firewall rules to protect servers and secure network traffic.
-- **3x-UI Panel Installation:** Installs and sets up the 3x-UI panel for simplified VPN management.
-- **Tunnel Configuration:** Configures a VPN tunnel using one of the supported methods for optimized performance.
 
-### Requirements:
-- **Two Servers:** One server must be located in the internal network and the other in the external network.  
-Nomad simplifies complex configurations, making it an ideal tool for secure and efficient VPN setups.
+Here’s a quick list of what Nomad can do for you:
 
-## Usage
-#### 1. Clone repository on your local machine
-```bash
-git clone https://github.com/0xAFz/nomad.git
+- **Server Setup:** Automates the configuration of two servers—one inside the network (internal) and one outside (external).
+- **OS Hardening:** Implements solid security practices to keep your operating system safe and sound.
+- **SSH Hardening:** Locks down SSH settings for better security.
+- **Firewall Configuration:** Sets up firewall rules to protect servers and secure network traffic.
+- **Xray Core:** Installs and configures the Xray core for advanced VPN capabilities.
+- **3x-UI Panel Installation:** Makes VPN management a breeze with the 3x-UI panel.
+- **Tunnel Configuration:** Sets up a VPN tunnel using supported methods to optimize performance.
 
-cd nomad/
+---
+
+### Supported Methods:
+- **Tunneling between 2 servers:**
+  - EasyTier
+  - tinyfecVPN
+- **Xray Core**
+- **3x-UI**
+
+Alright, let’s roll and get started with Nomad! 🛠️
+
+---
+
+## Firewall Configuration
+
+By default, the firewall blocks all traffic except the ports and IP ranges you specify in `inventory/group_vars/all/preparing.yml`. Wanna open or close a port? Easy, just edit the `iptables` section like this:
+
+```yml
+# iptables configuration
+iptables:
+  network_adapter_access:
+    - lo
+  tcp_port_access:
+    - 8084
+    - 8082
+  udp_port_access:
+    - 8084
+    - 8082
+  trusted_range:
+    - 10.22.22.0/24
+    - 10.44.44.0/24
+    - 10.0.0.0/24
+    - "{{ hostvars['external-network'].ansible_host }}/32"
+    - "{{ hostvars['internal-network'].ansible_host }}/32"
 ```
-#### 2. At first you must edit `.env` file and replace your values 
+
+After editing, run the following command to update the firewall rules:
+
+```bash
+ansible-playbook -i inventory/hosts.yml vpn.yml --tags iptables
+```
+
+---
+
+## Tunneling
+
+### EasyTier
+
+**Heads up!** Tunneling needs two servers—one in the internal network and one in the external network. Let’s set up EasyTier with the reverse tunneling method, which we recommend.
+
+#### Step 1: Configure the `.env` File
+
+If you’re using 3x-UI, you’ll need to configure the `.env` file first:
+
 ```bash
 cp .env.example .env
 
 <your-favorite-editor> .env
 ```
-#### 3. Build your own inventory
-```bash
-cp inventory/sample.yml inventory/hosts.yml
-<your-favorite-editor> inventory/hosts.yml
 
-# Review and change parameters under ``inventory/group_vars``
+Set your username and password for 3x-UI. If you’re not using it, skip this step.
+
+#### Step 2: Create the Inventory File
+
+Tell Ansible where to work by creating the `hosts.yml` file:
+
+```yml
+all:
+  hosts:
+    internal-network:
+      ansible_host: <external-network>
+      ansible_port: 3022
+      ansible_user: root
+    external-network:
+      ansible_host: <internal-network>
+      ansible_port: 3022
+      ansible_user: root
+```
+
+For reverse tunneling, swap the IPs of `internal-network` and `external-network`.
+
+#### Step 3: Update the Config Files
+
+Edit the following files to match your requirements:
+
+```bash
 <your-favorite-editor> inventory/group_vars/all/all.yml
 <your-favorite-editor> inventory/group_vars/all/preparing.yml
 <your-favorite-editor> inventory/group_vars/all/fec.yml
 <your-favorite-editor> inventory/group_vars/all/easytier.yml
 <your-favorite-editor> inventory/group_vars/all/xui.yml
 ```
-#### 4. Run `nomad.sh` to install and configure both servers
-```bash
-chmod +x nomad.sh
+
+#### Step 4: Enable EasyTier
+
+Set `enable_easytier` to `true` in `all.yml`:
+
+```yml
+## Set to true to enable the EasyTier service
+enable_easytier: true
 ```
-```bash
-./nomad.sh
+
+Then configure EasyTier in `easytier.yml`. For example:
+
+```yml
+easytier_multithread: true
 ```
-## Verify Installation
-1. Check tun interfaces
+
+For optimal performance, keep multithreading enabled (it reduces ping by spreading tasks across multiple threads).
+
+#### Step 5: Set a Network Secret
+
+Generate a new secret using:
+
 ```bash
+openssl rand -hex 6
+```
+
+Replace the default secret with your custom one in `easytier.yml`.
+
+#### Step 6: Run the Playbook
+
+You’re ready! Execute this command:
+
+```bash
+ansible-playbook -i inventory/hosts.yml vpn.yml
+```
+
+Nomad will handle OS hardening, kernel optimization, and firewall configuration. Errors? No worries, read the error message and rerun the command. 😂
+
+Verify the setup:
+
+```bash
+ssh user@ip -p 3122
+systemctl status easytier
 ip addr
 ```
+
+Expected output:
+
 ```bash
-# Excepted result:
-3: nomad-fec: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UNKNOWN group default qlen 500
+3: easytier: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1380 qdisc fq_codel state UNKNOWN group default qlen 500
     link/none 
-    inet 10.22.22.1 peer 10.22.22.2/32 scope global nomad-fec
+    inet 10.44.44.1/24 scope global easytier
+       valid_lft forever preferred_lft forever
+```
+
+---
+
+### TinyFecVPN
+
+TinyFecVPN is supported only on `x86_64` or `amd64` architectures. Setup is similar to EasyTier:
+
+1. Edit `all.yml` and set `enable_tinyfec` to `true`:
+
+```yml
+enable_tinyfec: true
+```
+
+2. Configure options in `tinyfec.yml`:
+
+```yml
+fec: "20:10"
+```
+
+Run the playbook:
+
+```bash
+ansible-playbook -i inventory/hosts.yml vpn.yml
+```
+
+Verify:
+
+```bash
+ssh user@ip -p 3122
+systemctl status tinyfec
+ip addr
+```
+
+Expected output:
+
+```bash
+3: tinyfec: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UNKNOWN group default qlen 500
+    link/none 
+    inet 10.22.22.1 peer 10.22.22.2/32 scope global tinyfec
        valid_lft forever preferred_lft forever
     inet6 fe80::906c:9f4e:59f:1522/64 scope link stable-privacy 
        valid_lft forever preferred_lft forever
-4: nomad-easytier: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1380 qdisc fq_codel state UNKNOWN group default qlen 500
-    link/none 
-    inet 10.44.44.1/24 scope global nomad-easytier
-       valid_lft forever preferred_lft forever
 ```
-2. Check Services Status
-```bash
-systemctl status nomad-fec # (if enabled)
 
-systemctl status nomad-easytier # (if enabled)
+---
+
+## Without Tunneling Inventory
+
+If you’re skipping tunneling, use a single server:
+
+```yml
+all:
+  hosts:
+    vpn:
+      ansible_host: <server-ip>
+      ansible_port: 3022
+      ansible_user: root
 ```
-3. Check **FEC** tunnel ping from internal network (if enabled)
-```bash
-ping 10.22.22.2
-```
-4. Check **EasyTier** tunnel ping from internal network (if enabled)
-```bash
-ping 10.44.44.2
-```
-5. Open **3x-UI** panel in browser
+
+---
+
+## Xray Core
 
 > [!WARNING]
-> For the security reasons, we blocked all public traffic to panels
+> Xray is supported only on x86\_64 or amd64 architectures.&#x20;
 
-### How to access the panels?
-You should open a `SSH` tunnel between local machine and server
+For installing Xray Core:
+
+1. Set `enable_xray` to `true` in `all.yml`:
+
+```yml
+enable_xray: true
+```
+
+2. Use the default config or replace it:
+
 ```bash
-# forwarding local port 8080 to server 127.0.0.1:2053
+cp /path/config.json roles/client/files/config.json
+cp /path/config.json roles/server/files/config.json
+```
+
+Run the playbook:
+
+```bash
+ansible-playbook -i inventory/hosts.yml vpn.yml
+```
+
+Verify:
+
+```bash
+systemctl status xray
+ss -tulpn
+```
+
+---
+
+## 3x-UI
+
+You’ll need to configure the `.env` file first:
+
+```bash
+cp .env.example .env
+
+<your-favorite-editor> .env
+```
+
+Enable 3x-UI by setting `enable_xui` to `true` in `all.yml`:
+
+```yml
+enable_xui: true
+```
+
+Configure options in `xui.yml`. Default settings:
+
+```yml
+xui_listen: 127.0.0.1
+xui_port: 2053
+xui_web_path: /
+```
+
+> [!WARNING]
+> We block all public traffic to 3x-ui panels by default
+
+After installation, access the panel by creating an SSH tunnel:
+
+```bash
 ssh -L 8080:127.0.0.1:2053 user@ip
 ```
+
+Then open in your browser:
+
 ```bash
-# now you can open this url in your browser
 http://localhost:8080
 ```
-> [!NOTE]
-> To be able to do SSH port forwarding, you must allow tcp forwarding `AllowTcpForwarding yes` in `/etc/ssh/sshd_config`  
-> By default we enabled it in the preparing tasks
+
+---
 
 # Credits
-- [tinyfecVPN](https://github.com/wangyu-/tinyfecVPN)
+
 - [EasyTier](https://github.com/EasyTier/EasyTier)
+- [Xray](https://github.com/XTLS/Xray-core)
+- [tinyfecVPN](https://github.com/wangyu-/tinyfecVPN)
+- [3x-UI](https://github.com/MHSanaei/3x-ui)
