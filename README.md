@@ -286,13 +286,17 @@ xui_web_path: /
 ```
 
 > [!WARNING]
-> We block all public traffic to 3x-ui panels by default
+> For the security reasons, we blocked all public traffic to panels
 
 After installation, access the panel by creating an SSH tunnel:
 
 ```bash
 ssh -L 8080:127.0.0.1:2053 user@ip
 ```
+
+> [!NOTE]
+> To be able to do SSH port forwarding, you must allow tcp forwarding `AllowTcpForwarding yes` in `/etc/ssh/sshd_config`  
+> By default we enabled it in the preparing tasks
 
 Then open in your browser:
 
