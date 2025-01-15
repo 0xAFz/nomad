@@ -167,7 +167,10 @@ Expected output:
 
 ### TinyFecVPN
 
-TinyFecVPN is supported only on `x86_64` or `amd64` architectures. Setup is similar to EasyTier:
+> [!WARNING]
+> TinyFecVPN is supported only on `x86_64` or `amd64` architectures.
+
+Setup is similar to EasyTier:
 
 1. Edit `all.yml` and set `enable_tinyfec` to `true`:
 
