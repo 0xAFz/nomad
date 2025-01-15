@@ -1,9 +1,6 @@
 ---
 - name: Install 3x-UI panel
-  shell: |
-    if ! command -v x-ui &> /dev/null; then
-      yes n | bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)
-    fi
+  shell: which x-ui || yes n | bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/master/install.sh)
   args:
     executable: /bin/bash
 
@@ -21,9 +18,3 @@
   notify: 
     - restart x-ui
 
-- name: Allow private IP routing
-  script: files/settings.sh
-  args:
-    executable: /bin/bash
-  tags: 
-    - allow-private-ip
