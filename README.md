@@ -40,7 +40,7 @@ sed -i 's/#Port 22/Port 3022/g' /etc/ssh/sshd_config && systemctl restart sshd
 
 This one-liner will update the SSH configuration to use port `3022` and restart the SSH service to apply the changes.  
 
-> **Note:**  
+> [!NOTE]
 > Make sure to update your firewall rules to allow the new SSH port before running this command, so you don't accidentally lock yourself out.  
 
 ---
