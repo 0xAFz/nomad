@@ -29,6 +29,22 @@ Alright, let’s roll and get started with Nomad! 🛠️
 
 ---
 
+### SSH Port Configuration  
+We recommend changing the default SSH port for better security when setting up your servers.  
+
+To change the SSH port, connect to your server and run the following command:  
+
+```bash
+sed -i 's/#Port 22/Port 3022/g' /etc/ssh/sshd_config && systemctl restart sshd
+```  
+
+This one-liner will update the SSH configuration to use port `3022` and restart the SSH service to apply the changes.  
+
+> **Note:**  
+> Make sure to update your firewall rules to allow the new SSH port before running this command, so you don't accidentally lock yourself out.  
+
+---
+
 ## Firewall Configuration
 
 By default, the firewall blocks all traffic except the ports and IP ranges you specify in `inventory/group_vars/all/preparing.yml`. Wanna open or close a port? Easy, just edit the `iptables` section like this:
@@ -149,11 +165,12 @@ Nomad will handle OS hardening, kernel optimization, and firewall configuration.
 Verify the setup:
 
 ```bash
-ssh user@ip -p 3122
 systemctl status easytier
-ip addr
 ```
 
+```bash
+ip addr
+```
 Expected output:
 
 ```bash
@@ -193,11 +210,12 @@ ansible-playbook -i inventory/hosts.yml vpn.yml
 Verify:
 
 ```bash
-ssh user@ip -p 3122
 systemctl status tinyfec
-ip addr
 ```
 
+```bash
+ip addr
+```
 Expected output:
 
 ```bash
@@ -256,6 +274,9 @@ Verify:
 
 ```bash
 systemctl status xray
+```
+
+```bash
 ss -tulpn
 ```
 
