@@ -1,5 +1,5 @@
 ---
-easytier_version: v2.1.1
+easytier_version: v2.1.2
 
 easytier_dir: "{{ config_dir }}/easytier"
 
