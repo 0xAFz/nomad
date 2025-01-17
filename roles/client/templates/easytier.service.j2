@@ -5,7 +5,7 @@ Description=EasyTier Service
 After=network.target
 
 [Service]
-ExecStart={{ easytier_dir }}/easytier-core -i {{ easytier_client_local_ip }} --peers {{ easytier_protocol }}://{{ hostvars["external-network"].ansible_host }}:{{ easytier_port }} --hostname easytier --network-secret {{ easytier_secret }} --default-protocol {{ easytier_protocol }} --dev-name easytier {% if easytier_multithread %}--multi-thread{% endif %}{% if not easytier_encryption %}--disable-encryption{% endif %} {% if not easytier_ipv6 %}--disable-ipv6{% endif %}
+ExecStart={{ easytier_dir }}/easytier-core -i {{ easytier_client_local_ip }} --peers {{ easytier_protocol }}://{{ hostvars["external-network"].ansible_host }}:{{ easytier_port }} --hostname easytier --network-secret {{ easytier_secret }} --default-protocol {{ easytier_protocol }} --dev-name easytier {% if easytier_multithread %}--multi-thread{% endif %} {% if not easytier_encryption %}--disable-encryption{% endif %} {% if not easytier_ipv6 %}--disable-ipv6{% endif %}
 
 Restart=on-failure
 RestartSec=5s
