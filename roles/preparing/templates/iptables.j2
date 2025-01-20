@@ -24,15 +24,17 @@ COMMIT
 :INPUT ACCEPT [0:0]
 :FORWARD DROP  [0:0]
 :OUTPUT ACCEPT [0:0]
--A INPUT -p icmp -j ACCEPT -m comment --comment "Allow icmp packets."
 -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT -m comment --comment "Allow incoming related and established connections."
--A INPUT -p tcp -m tcp --dport {{ sshd_config.Port | default('22') }} -j ACCEPT -m comment --comment "Accept new SSH connections."
--A INPUT -j DROP -m comment --comment "Drop all other packets."
 {% if iptables.network_adapter_access is defined %}
 {% for adapter in iptables.network_adapter_access %}
 -A INPUT -i {{ adapter }} -j ACCEPT -m comment --comment "Allow {{ adapter }} interface packets."
 {% endfor %}
 {% endif %}
+-A INPUT -p icmp -j ACCEPT -m comment --comment "Allow icmp packets."
+{% if iptables.trusted_range is defined %}
+{% for cidr in iptables.trusted_range %}
+-A INPUT -s {{ cidr }} -j ACCEPT -m comment --comment "Allow incoming packets from trusted range."
+{% endfor %}
 {% if iptables.tcp_port_access is defined %}
 {% for port in iptables.tcp_port_access %}
 -A INPUT -p tcp -m tcp --dport {{ port }} -j ACCEPT -m comment --comment "Allow incoming tcp packets on {{ port }}."
@@ -43,19 +45,17 @@ COMMIT
 -A INPUT -p udp -m udp --dport {{ port }} -j ACCEPT -m comment --comment "Allow incoming udp packets on {{ port }}"
 {% endfor %}
 {% endif %}
-{% if iptables.trusted_range is defined %}
+-A INPUT -p tcp -m tcp --dport {{ sshd_config.Port | default('22') }} -j ACCEPT -m comment --comment "Accept SSH connections."
+-A INPUT -j DROP -m comment --comment "Drop all other packets."
 {% for cidr in iptables.trusted_range %}
--A INPUT -s {{ cidr }} -j ACCEPT -m comment --comment "Allow incoming connections from trusted range."
-{% endfor %}
-{% for cidr in iptables.trusted_range %}
--A OUTPUT -s {{ cidr }} -j ACCEPT -m comment --comment "Allow incoming connections from trusted range."
+-A OUTPUT -s {{ cidr }} -j ACCEPT -m comment --comment "Allow outgoing packets to trusted range."
 {% endfor %}
 {% endif %}
 -A OUTPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT -m comment --comment "Allow all outgoing related and established connections."
--A OUTPUT -o lo -j ACCEPT -m comment --comment "Allow outgoing loopback packets."
+-A OUTPUT -o lo -j ACCEPT -m comment --comment "Allow outgoing loopback interface packets."
 -A OUTPUT -p icmp -j ACCEPT -m comment --comment "Allow outgoing icmp packets."
--A OUTPUT -p tcp -m tcp --dport 80 -j ACCEPT -m comment --comment "Allow outgoing HTTP traffic."
--A OUTPUT -p tcp -m tcp --dport 443 -j ACCEPT -m comment --comment "Allow outgoing HTTPS traffic."
+-A OUTPUT -p tcp -m tcp --dport 80 -j ACCEPT -m comment --comment "Allow outgoing HTTP packets."
+-A OUTPUT -p tcp -m tcp --dport 443 -j ACCEPT -m comment --comment "Allow outgoing HTTPS packets."
 -A OUTPUT -p tcp -m tcp --dport 53 -j ACCEPT -m comment --comment "Allow outging dns over tcp packets."
 -A OUTPUT -p udp -m udp --dport 53 -j ACCEPT -m comment --comment "Allow outging dns over udp packets."
 -A OUTPUT -j DROP -m comment --comment "Drop all other packets."
