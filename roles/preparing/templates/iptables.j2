@@ -47,13 +47,13 @@ COMMIT
 {% endif %}
 -A INPUT -p tcp -m tcp --dport {{ sshd_config.Port | default('22') }} -j ACCEPT -m comment --comment "Accept SSH connections."
 -A INPUT -j DROP -m comment --comment "Drop all other packets."
+-A OUTPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT -m comment --comment "Allow all outgoing related and established connections."
+-A OUTPUT -o lo -j ACCEPT -m comment --comment "Allow outgoing lo interface packets."
+-A OUTPUT -p icmp -j ACCEPT -m comment --comment "Allow outgoing icmp packets."
 {% for cidr in iptables.trusted_range %}
 -A OUTPUT -s {{ cidr }} -j ACCEPT -m comment --comment "Allow outgoing packets to trusted range."
 {% endfor %}
 {% endif %}
--A OUTPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT -m comment --comment "Allow all outgoing related and established connections."
--A OUTPUT -o lo -j ACCEPT -m comment --comment "Allow outgoing loopback interface packets."
--A OUTPUT -p icmp -j ACCEPT -m comment --comment "Allow outgoing icmp packets."
 -A OUTPUT -p tcp -m tcp --dport 80 -j ACCEPT -m comment --comment "Allow outgoing HTTP packets."
 -A OUTPUT -p tcp -m tcp --dport 443 -j ACCEPT -m comment --comment "Allow outgoing HTTPS packets."
 -A OUTPUT -p tcp -m tcp --dport 53 -j ACCEPT -m comment --comment "Allow outging dns over tcp packets."
