@@ -24,37 +24,31 @@ COMMIT
 :INPUT ACCEPT [0:0]
 :FORWARD DROP  [0:0]
 :OUTPUT ACCEPT [0:0]
-:CHECK_INPUT - [0:0]
-:CHECK_OUTPUT - [0:0]
-
--A INPUT -p tcp --dport {{ xui_port }} ! -s 127.0.0.1 -j DROP -m comment --comment "Drop all incoming packets to x-ui except loopback."
--A INPUT -i lo -j ACCEPT -m comment --comment "Allow incoming loopback packets."
--A INPUT -p icmp -j ACCEPT -m comment --comment "Allow incoming icmp packets."
+-A INPUT -p icmp -j ACCEPT -m comment --comment "Allow icmp packets."
 -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT -m comment --comment "Allow incoming related and established connections."
 -A INPUT -p tcp -m tcp --dport {{ sshd_config.Port | default('22') }} -j ACCEPT -m comment --comment "Accept new SSH connections."
--A INPUT -j CHECK_INPUT -m comment --comment "Include CHECK_INPUT chain rules."
 -A INPUT -j DROP -m comment --comment "Drop all other packets."
 {% if iptables.network_adapter_access is defined %}
 {% for adapter in iptables.network_adapter_access %}
--A CHECK_INPUT -i {{ adapter }} -j ACCEPT -m comment --comment "Allow {{ adapter }} interface packets."
+-A INPUT -i {{ adapter }} -j ACCEPT -m comment --comment "Allow {{ adapter }} interface packets."
 {% endfor %}
 {% endif %}
 {% if iptables.tcp_port_access is defined %}
 {% for port in iptables.tcp_port_access %}
--A CHECK_INPUT -p tcp -m tcp --dport {{ port }} -j ACCEPT -m comment --comment "Allow incoming tcp packets on {{ port }}."
+-A INPUT -p tcp -m tcp --dport {{ port }} -j ACCEPT -m comment --comment "Allow incoming tcp packets on {{ port }}."
 {% endfor %}
 {% endif %}
 {% if iptables.udp_port_access is defined %}
 {% for port in iptables.udp_port_access %}
--A CHECK_INPUT -p udp -m udp --dport {{ port }} -j ACCEPT -m comment --comment "Allow incoming udp packets on {{ port  }}"
+-A INPUT -p udp -m udp --dport {{ port }} -j ACCEPT -m comment --comment "Allow incoming udp packets on {{ port }}"
 {% endfor %}
 {% endif %}
 {% if iptables.trusted_range is defined %}
 {% for cidr in iptables.trusted_range %}
--A CHECK_INPUT -s {{ cidr }} -j ACCEPT -m comment --comment "Allow incoming connections from trusted range."
+-A INPUT -s {{ cidr }} -j ACCEPT -m comment --comment "Allow incoming connections from trusted range."
 {% endfor %}
 {% for cidr in iptables.trusted_range %}
--A CHECK_OUTPUT -s {{ cidr }} -j ACCEPT -m comment --comment "Allow incoming connections from trusted range."
+-A OUTPUT -s {{ cidr }} -j ACCEPT -m comment --comment "Allow incoming connections from trusted range."
 {% endfor %}
 {% endif %}
 -A OUTPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT -m comment --comment "Allow all outgoing related and established connections."
@@ -64,6 +58,5 @@ COMMIT
 -A OUTPUT -p tcp -m tcp --dport 443 -j ACCEPT -m comment --comment "Allow outgoing HTTPS traffic."
 -A OUTPUT -p tcp -m tcp --dport 53 -j ACCEPT -m comment --comment "Allow outging dns over tcp packets."
 -A OUTPUT -p udp -m udp --dport 53 -j ACCEPT -m comment --comment "Allow outging dns over udp packets."
--A OUTPUT -j CHECK_OUTPUT -m comment --comment "Include CHECK_OUTPUT chain rules."
 -A OUTPUT -j DROP -m comment --comment "Drop all other packets."
 COMMIT
