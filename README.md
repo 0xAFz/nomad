@@ -63,7 +63,6 @@ iptables:
   trusted_range:
     - 10.22.22.0/24
     - 10.44.44.0/24
-    - 10.0.0.0/24
     - "{{ hostvars['external-network'].ansible_host }}/32"
     - "{{ hostvars['internal-network'].ansible_host }}/32"
 ```
@@ -120,8 +119,9 @@ Edit the following files to match your requirements:
 ```bash
 <your-favorite-editor> inventory/group_vars/all/all.yml
 <your-favorite-editor> inventory/group_vars/all/preparing.yml
-<your-favorite-editor> inventory/group_vars/all/fec.yml
+<your-favorite-editor> inventory/group_vars/all/tinyfec.yml
 <your-favorite-editor> inventory/group_vars/all/easytier.yml
+<your-favorite-editor> inventory/group_vars/all/xray.yml
 <your-favorite-editor> inventory/group_vars/all/xui.yml
 ```
 
