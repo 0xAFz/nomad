@@ -1,5 +1,25 @@
 ---
 - hosts: all
   become: true
+  tasks:
+    - name: Show all network interfaces
+      debug:
+        msg: "{{ ansible_interfaces }}"
+
+    - name: Find the public network interface
+      set_fact:
+        public_interface: "{{ item }}"
+      when:
+        - hostvars[inventory_hostname]['ansible_' + item].ipv4 is defined
+        - hostvars[inventory_hostname]['ansible_' + item]['ipv4']['address'] == ansible_host
+      with_items: "{{ ansible_interfaces }}"
+
+    - name: Print the public network interface
+      debug:
+        msg: "Public network interface is {{ public_interface | default('not found') }}"
+       
+- hosts: all
+  become: true
   roles:
     - { role: ../roles/preparing, tags: preparing }
+
