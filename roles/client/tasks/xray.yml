@@ -1,13 +1,14 @@
 ---
 - name: Check if config.json exists
+  become: false
   stat:
-    path: files/config.json
+    path: "{{ role_path }}/files/config.json"
   register: config_file
   delegate_to: localhost
 
 - name: Copy Xray custom config
   copy:
-    src: config.json
+    src: files/config.json
     dest: "{{ xray_dir }}/config.json"
     owner: root
     group: root
