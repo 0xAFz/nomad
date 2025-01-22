@@ -1,0 +1,5 @@
+---
+- name: Apply {{ qdisc }} to the public interface
+  command: "tc qdisc replace dev {{ public_interface }} root {{ qdisc }}"
+  when: public_interface is defined
+

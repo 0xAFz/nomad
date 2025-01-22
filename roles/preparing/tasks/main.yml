@@ -3,6 +3,10 @@
   import_tasks: packages.yml
   tags: packages
 
+- name: Configure network interfaces
+  import_tasks: tc.yml
+  tags: tc
+
 - name: Change limits.conf
   import_tasks: limits.yml
   tags: hardening
