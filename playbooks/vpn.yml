@@ -2,6 +2,12 @@
 - name: Preparing tasks for every playbooks
   import_playbook: preparing.yml
 
+- hosts: all
+  become: true
+  roles:
+    - { role: ../roles/xray, tags: xray, when: enable_xray }
+    - { role: ../roles/xui, tags: xui, when: enable_xui }
+
 - hosts: external-network
   become: true
   roles:
@@ -16,8 +22,3 @@
     - { role: ../roles/tinyfec, tags: tinyfec, when: enable_tinyfec }
     - { role: ../roles/client, tags: client }
 
-- hosts: all
-  become: true
-  roles:
-    - { role: ../roles/xray, tags: xray, when: enable_xray }
-    - { role: ../roles/xui, tags: xui, when: enable_xui }
