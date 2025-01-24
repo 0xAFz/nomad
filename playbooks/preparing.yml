@@ -1,6 +1,8 @@
 ---
 - hosts: all
   become: true
+  gather_facts: false
+
   tasks:
     - name: Show all network interfaces
       debug:
