@@ -66,24 +66,32 @@
   systemd:
     name: iptables
     enabled: true
+    state: started
+  ignore_errors: true
   when: firewall == 'iptables'
 
 - name: Disable iptables service
   systemd:
     name: iptables
     enabled: false
+    state: stopped
+  ignore_errors: true
   when: firewall == 'nftables'
 
 - name: Enable nftables service
   systemd:
     name: nftables
     enabled: true
+    state: started
+  ignore_errors: true
   when: firewall == 'nftables'
 
 - name: Disable nftables service
   systemd:
     name: nftables
     enabled: false
+    state: stopped
+  ignore_errors: true
   when: firewall == 'iptables'
 
 - name: Make fail2ban configuration file
