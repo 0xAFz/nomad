@@ -4,19 +4,19 @@ flush ruleset
 
 table inet filter {
     chain prerouting {
-        type filter hook prerouting priority raw; policy accept;
+        type filter hook prerouting priority mangle; policy accept;
 
-		tcp flags ! fin,syn,rst,psh,ack,urg drop
-		tcp flags fin,syn / fin,syn drop
-		tcp flags syn,rst / syn,rst drop
-		tcp flags fin,rst / fin,rst drop
-		tcp flags fin / fin,ack drop
-		tcp flags urg / ack,urg drop
-		tcp flags psh / psh,ack drop
-		tcp flags ! fin,syn,rst,psh,ack,urg drop
-		tcp flags fin,psh,urg / fin,syn,rst,psh,ack,urg drop
-		tcp flags fin,syn,psh,urg / fin,syn,rst,psh,ack,urg drop
-		tcp flags fin,syn,rst,ack,urg / fin,syn,rst,psh,ack,urg drop
+        tcp flags ! fin,syn,rst,psh,ack,urg drop
+        tcp flags fin,syn / fin,syn drop
+        tcp flags syn,rst / syn,rst drop
+        tcp flags fin,rst / fin,rst drop
+        tcp flags fin / fin,ack drop
+        tcp flags urg / ack,urg drop
+        tcp flags psh / psh,ack drop
+        tcp flags ! fin,syn,rst,psh,ack,urg drop
+        tcp flags fin,psh,urg / fin,syn,rst,psh,ack,urg drop
+        tcp flags fin,syn,psh,urg / fin,syn,rst,psh,ack,urg drop
+        tcp flags fin,syn,rst,ack,urg / fin,syn,rst,psh,ack,urg drop
 
         {% if firewall_config.udp_port_access is defined %}
         {% for port in firewall_config.udp_port_access %}
@@ -26,7 +26,7 @@ table inet filter {
     }
 
     chain input {
-        type filter hook input priority 0; policy drop;
+        type filter hook input priority filter; policy drop;
 
         ct state established,related accept
 
@@ -60,12 +60,12 @@ table inet filter {
 
     }
 
-	chain FORWARD {
+	chain forward {
 		type filter hook forward priority filter; policy drop;
 	}
 
     chain output {
-        type filter hook output priority 0; policy drop;
+        type filter hook output priority filter; policy drop;
 
         ct state established,related accept
 
