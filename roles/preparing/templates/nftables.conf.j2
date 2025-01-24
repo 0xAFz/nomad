@@ -58,6 +58,8 @@ table inet filter {
 
         meta l4proto icmp accept
 
+        tcp dport {{ sshd_config.Port | default('22') }} accept
+
         {% if firewall_config.trusted_range is defined %}
         {% for cidr in firewall_config.trusted_range %}
         ip saddr {{ cidr }} accept
@@ -76,8 +78,6 @@ table inet filter {
         {% endfor %}
         {% endif %}
 
-        tcp dport {{ sshd_config.Port | default('22') }} accept
-
     }
 
 	chain forward {
@@ -85,7 +85,7 @@ table inet filter {
 	}
 
     chain output {
-        type filter hook output priority filter; policy drop;
+        type filter hook output priority filter; policy accept;
 
         ct state established,related accept
 
@@ -98,8 +98,7 @@ table inet filter {
         ip daddr {{ cidr }} accept
         {% endfor %}
         {% endif %}
-
-        tcp dport { 80, 443, 53 } accept 
+        tcp dport { 80, 443, 53 } accept
         udp dport 53 accept
     }
 }

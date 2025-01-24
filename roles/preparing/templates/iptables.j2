@@ -65,5 +65,4 @@ COMMIT
 -A OUTPUT -p tcp -m tcp --dport 443 -j ACCEPT -m comment --comment "Allow outgoing HTTPS packets."
 -A OUTPUT -p tcp -m tcp --dport 53 -j ACCEPT -m comment --comment "Allow outging dns over tcp packets."
 -A OUTPUT -p udp -m udp --dport 53 -j ACCEPT -m comment --comment "Allow outging dns over udp packets."
--A OUTPUT -j DROP -m comment --comment "Drop all other packets."
 COMMIT
