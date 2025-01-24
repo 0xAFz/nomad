@@ -53,7 +53,7 @@ COMMIT
 -A OUTPUT -o lo -j ACCEPT -m comment --comment "Allow outgoing lo interface packets."
 -A OUTPUT -p icmp -j ACCEPT -m comment --comment "Allow outgoing icmp packets."
 {% for cidr in firewall_config.trusted_range %}
--A OUTPUT -s {{ cidr }} -j ACCEPT -m comment --comment "Allow outgoing packets to trusted range."
+-A OUTPUT -d {{ cidr }} -j ACCEPT -m comment --comment "Allow outgoing packets to trusted range."
 {% endfor %}
 {% endif %}
 -A OUTPUT -p tcp -m tcp --dport 80 -j ACCEPT -m comment --comment "Allow outgoing HTTP packets."
