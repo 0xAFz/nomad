@@ -38,7 +38,7 @@ table inet mangle {
 
         {% if firewall_config.udp_port_access is defined %}
         {% for port in firewall_config.udp_port_access %}
-        udp dport {{ port }} ip dscp set 0x2e
+        udp sport {{ port }} ip dscp set 0x2e
         {% endfor %}
         {% endif %}
     }
