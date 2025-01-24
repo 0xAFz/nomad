@@ -18,8 +18,8 @@
 -A PREROUTING -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG FIN,PSH,URG -j DROP
 -A PREROUTING -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG FIN,SYN,PSH,URG -j DROP
 -A PREROUTING -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG FIN,SYN,RST,ACK,URG -j DROP
-{% if iptables.udp_port_access is defined %}
-{% for port in iptables.udp_port_access %}
+{% if firewall_config.udp_port_access is defined %}
+{% for port in firewall_config.udp_port_access %}
 -A PREROUTING -p udp -m udp --dport {{ port }} -j DSCP --set-dscp 46
 {% endfor %}
 {% endif %}
@@ -30,23 +30,23 @@ COMMIT
 :FORWARD DROP  [0:0]
 :OUTPUT ACCEPT [0:0]
 -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT -m comment --comment "Allow incoming related and established connections."
-{% if iptables.network_adapter_access is defined %}
-{% for adapter in iptables.network_adapter_access %}
+{% if firewall_config.network_adapter_access is defined %}
+{% for adapter in firewall_config.network_adapter_access %}
 -A INPUT -i {{ adapter }} -j ACCEPT -m comment --comment "Allow {{ adapter }} interface packets."
 {% endfor %}
 {% endif %}
 -A INPUT -p icmp -j ACCEPT -m comment --comment "Allow icmp packets."
-{% if iptables.trusted_range is defined %}
-{% for cidr in iptables.trusted_range %}
+{% if firewall_config.trusted_range is defined %}
+{% for cidr in firewall_config.trusted_range %}
 -A INPUT -s {{ cidr }} -j ACCEPT -m comment --comment "Allow incoming packets from trusted range."
 {% endfor %}
-{% if iptables.tcp_port_access is defined %}
-{% for port in iptables.tcp_port_access %}
+{% if firewall_config.tcp_port_access is defined %}
+{% for port in firewall_config.tcp_port_access %}
 -A INPUT -p tcp -m tcp --dport {{ port }} -j ACCEPT -m comment --comment "Allow incoming tcp packets on {{ port }}."
 {% endfor %}
 {% endif %}
-{% if iptables.udp_port_access is defined %}
-{% for port in iptables.udp_port_access %}
+{% if firewall_config.udp_port_access is defined %}
+{% for port in firewall_config.udp_port_access %}
 -A INPUT -p udp -m udp --dport {{ port }} -j ACCEPT -m comment --comment "Allow incoming udp packets on {{ port }}"
 {% endfor %}
 {% endif %}
@@ -55,7 +55,7 @@ COMMIT
 -A OUTPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT -m comment --comment "Allow all outgoing related and established connections."
 -A OUTPUT -o lo -j ACCEPT -m comment --comment "Allow outgoing lo interface packets."
 -A OUTPUT -p icmp -j ACCEPT -m comment --comment "Allow outgoing icmp packets."
-{% for cidr in iptables.trusted_range %}
+{% for cidr in firewall_config.trusted_range %}
 -A OUTPUT -s {{ cidr }} -j ACCEPT -m comment --comment "Allow outgoing packets to trusted range."
 {% endfor %}
 {% endif %}
