@@ -4,17 +4,17 @@ table inet filter {
     chain prerouting {
         type filter hook prerouting priority raw; policy accept;
 
-        tcp flags noflags drop
-        tcp flags fin,syn drop
-        tcp flags syn,rst drop
-        tcp flags fin,rst drop
-        tcp flags fin,ack drop
-        tcp flags ack,urg drop
-        tcp flags psh,ack drop
-        tcp flags fin,syn,rst,psh,ack,urg drop
-        tcp flags fin,syn,rst,psh,ack,urg drop
-        tcp flags fin,syn,rst,psh,ack,urg drop
-        tcp flags fin,syn,rst,psh,ack,urg drop
+        tcp flags == none drop
+        tcp flags fin,syn == fin,syn drop
+        tcp flags syn,rst == syn,rst drop
+        tcp flags fin,rst == fin,rst drop
+        tcp flags fin,ack == fin drop
+        tcp flags ack,urg == urg drop
+        tcp flags psh,ack == psh drop
+        tcp flags == fin,syn,rst,psh,ack,urg drop
+        tcp flags == fin,psh,urg drop
+        tcp flags == fin,syn,psh,urg drop
+        tcp flags == fin,syn,rst,ack,urg drop
 
         {% if firewall_config.udp_port_access is defined %}
         {% for port in firewall_config.udp_port_access %}
