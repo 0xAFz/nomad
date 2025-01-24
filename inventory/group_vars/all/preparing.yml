@@ -42,14 +42,10 @@ iptables:
   tcp_port_access:
     - 80
     - 443
-    - 8080
     - 2087
-    - 8084
-    - 8082
   udp_port_access:
     - 8084
     - 8082
-    - 8088
   trusted_range:
     - 10.22.22.0/24
     - 10.44.44.0/24
@@ -101,7 +97,7 @@ limit_nproc_soft: 10000
 # traffic control variables
 # cake
 # mbit, gbit, unlimited
-bandwith: 900mbit
+bandwidth: 900mbit
 rtt: 100ms
 
 # sysctl configuration variables
