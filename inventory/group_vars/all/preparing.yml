@@ -98,9 +98,6 @@ limit_nofile_soft: 1000000
 limit_nproc_hard: 10000
 limit_nproc_soft: 10000
 
-# traffic control variables
-qdisc: fq_codel
-
 # ysctll configuration variables
 sysctl_config:
   net.core.somaxconn: 65535
@@ -128,7 +125,7 @@ sysctl_config:
   net.ipv4.udp_wmem_min: 8192
   net.ipv4.udp_l3mdev_accept: 1
   net.ipv4.ip_default_ttl: 64
-  net.core.default_qdisc: "{{ qdisc }}"
+  net.core.default_qdisc: cake
   net.ipv4.tcp_congestion_control: cubic
   net.ipv4.icmp_echo_ignore_all: 0
   net.ipv4.ip_forward: 1
