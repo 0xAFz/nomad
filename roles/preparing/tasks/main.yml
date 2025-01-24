@@ -11,7 +11,7 @@
   import_tasks: limits.yml
   tags: hardening
 
-- name: Configure sshd, iptabels and ...
+- name: Configure sshd, firewall and ...
   import_tasks: hardening.yml
   tags: hardening, firewall
 

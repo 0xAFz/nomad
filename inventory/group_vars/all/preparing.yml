@@ -21,6 +21,7 @@ packages:
 - apache2-utils
 - tcpdump
 - iptables-persistent
+- nftables
 - auditd
 - libpwquality-common
 - cracklib-runtime
@@ -35,8 +36,11 @@ sshd_config:
   AllowUsers: root
   AllowGroups: root
 
-# iptables configuration
-iptables:
+# firewall system: nftables or iptables
+firewall: nftables
+
+# firewall configuration
+firewall_config:
   network_adapter_access:
     - lo
   tcp_port_access:

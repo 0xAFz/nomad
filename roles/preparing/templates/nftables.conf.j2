@@ -1,0 +1,80 @@
+#!/usr/sbin/nft -f
+
+table inet filter {
+    chain prerouting {
+        type filter hook prerouting priority -150; policy accept;
+
+        tcp flags none drop
+        tcp flags fin,syn drop
+        tcp flags syn,rst drop
+        tcp flags fin,rst drop
+        tcp flags fin,ack fin drop
+        tcp flags ack,urg urg drop
+        tcp flags psh,ack psh drop
+        tcp flags fin,syn,rst,psh,ack,urg fin,syn,rst,psh,ack,urg drop
+        tcp flags fin,syn,rst,psh,ack,urg fin,psh,urg drop
+        tcp flags fin,syn,rst,psh,ack,urg fin,syn,psh,urg drop
+        tcp flags fin,syn,rst,psh,ack,urg fin,syn,rst,ack,urg drop
+
+        {% if firewall_config.udp_port_access is defined %}
+        {% for port in firewall_config.udp_port_access %}
+        udp dport {{ port }} meta set dscp 46
+        {% endfor %}
+        {% endif %}
+    }
+
+    chain input {
+        type filter hook input priority 0; policy drop;
+
+        ct state established,related accept comment "Allow related and established connections."
+
+        {% if firewall_config.network_adapter_access is defined %}
+        {% for adapter in firewall_config.network_adapter_access %}
+        iifname "{{ adapter }}" accept comment "Allow {{ adapter }} interface packets."
+        {% endfor %}
+        {% endif %}
+
+        ip protocol icmp accept comment "Allow ICMP packets."
+
+        {% if firewall_config.trusted_range is defined %}
+        {% for cidr in firewall_config.trusted_range %}
+        ip saddr {{ cidr }} accept comment "Allow incoming packets from trusted range."
+        {% endfor %}
+        {% endif %}
+
+        {% if firewall_config.tcp_port_access is defined %}
+        {% for port in firewall_config.tcp_port_access %}
+        tcp dport {{ port }} accept comment "Allow TCP traffic on port {{ port }}."
+        {% endfor %}
+        {% endif %}
+
+        {% if firewall_config.udp_port_access is defined %}
+        {% for port in firewall_config.udp_port_access %}
+        udp dport {{ port }} accept comment "Allow UDP traffic on port {{ port }}."
+        {% endfor %}
+        {% endif %}
+
+        tcp dport {{ sshd_config.Port | default('22') }} accept comment "Allow SSH connections."
+
+    }
+
+    chain output {
+        type filter hook output priority 0; policy drop;
+
+        ct state established,related accept comment "Allow related and established connections."
+
+        oifname "lo" accept comment "Allow loopback traffic."
+
+        ip protocol icmp accept comment "Allow ICMP packets."
+
+        {% if firewall_config.trusted_range is defined %}
+        {% for cidr in firewall_config.trusted_range %}
+        ip daddr {{ cidr }} accept comment "Allow outgoing packets to trusted range."
+        {% endfor %}
+        {% endif %}
+
+        tcp dport { 80, 443, 53 } accept comment "Allow HTTP, HTTPS, and DNS over TCP."
+        udp dport 53 accept comment "Allow DNS over UDP."
+    }
+}
+

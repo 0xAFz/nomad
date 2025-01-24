@@ -1,18 +1,4 @@
 ---
-- name: Stop and disable ufw service
-  service:
-    name: ufw
-    state: stopped
-    enabled: no
-  ignore_errors: true
-
-- name: Stop and disable postfix service
-  service:
-    name: postfix
-    state: stopped
-    enabled: no
-  ignore_errors: true
-
 - name: Make timeout configuration file
   template:
     src: timeout.j2
@@ -49,15 +35,56 @@
     src: iptables.j2
     dest: /etc/iptables/rules.v4
   tags: iptables
+  when: firewall == 'iptables'
 
 - name: Restore iptables state
-  become: true
   shell: iptables-restore < /etc/iptables/rules.v4
   async: 45
   poll: 15
   ignore_errors: true
   notify: Restart iptables
   tags: iptables
+  when: firewall == 'iptables'
+
+- name: Make nftables configuration file
+  template:
+    src: nftables.conf.j2
+    dest: /etc/nftables.conf
+  tags: nftables
+  when: firewall == 'nftables'
+
+- name: Restore nftables state
+  shell: nft -f /etc/nftables.conf
+  async: 45
+  poll: 15
+  ignore_errors: true
+  notify: Restart nftables
+  tags: nftables
+  when: firewall == 'nftables'
+
+- name: Enable iptables service
+  systemd:
+    name: iptables
+    enabled: true
+  when: firewall == 'iptables'
+
+- name: Disable iptables service
+  systemd:
+    name: iptables
+    enabled: false
+  when: firewall == 'nftables'
+
+- name: Enable nftables service
+  systemd:
+    name: nftables
+    enabled: true
+  when: firewall == 'nftables'
+
+- name: Disable nftables service
+  systemd:
+    name: nftables
+    enabled: false
+  when: firewall == 'iptables'
 
 - name: Make fail2ban configuration file
   template:

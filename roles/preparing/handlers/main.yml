@@ -8,6 +8,11 @@
     name: iptables
     state: restarted
 
+- name: Restart nftables
+  systemd:
+    name: nftables
+    state: restarted
+
 - name: Restart fail2ban
   systemd:
     name: fail2ban
@@ -19,7 +24,9 @@
     state: restarted
 
 - name: Restart auditd
-  command: systemctl restart auditd
+  systemd:
+    name: auditd
+    state: restarted
 
 - name: Generate auditd
   command: augenrules
