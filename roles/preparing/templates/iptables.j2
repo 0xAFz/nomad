@@ -20,6 +20,11 @@
 -A PREROUTING -p udp -m udp --dport {{ port }} -j DSCP --set-dscp 46
 {% endfor %}
 {% endif %}
+{% if firewall_config.udp_port_access is defined %}
+{% for port in firewall_config.udp_port_access %}
+-A POSTROUTING -p udp -m udp --dport {{ port }} -j DSCP --set-dscp 46
+{% endfor %}
+{% endif %}
 COMMIT
 
 *filter

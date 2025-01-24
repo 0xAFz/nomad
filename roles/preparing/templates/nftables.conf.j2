@@ -2,7 +2,7 @@
 
 flush ruleset
 
-table inet filter {
+table inet mangle {
     chain prerouting {
         type filter hook prerouting priority mangle; policy accept;
 
@@ -24,7 +24,27 @@ table inet filter {
         {% endfor %}
         {% endif %}
     }
+    chain input {
+        type filter hook prerouting priority mangle; policy accept;
+    }
+    chain forward {
+        type filter hook prerouting priority mangle; policy accept;
+    }
+    chain output {
+        type filter hook prerouting priority mangle; policy accept;
+    }
+    chain postrouting {
+        type filter hook prerouting priority mangle; policy accept;
 
+        {% if firewall_config.udp_port_access is defined %}
+        {% for port in firewall_config.udp_port_access %}
+        udp dport {{ port }} ip dscp set 0x2e
+        {% endfor %}
+        {% endif %}
+    }
+}
+
+table inet filter {
     chain input {
         type filter hook input priority filter; policy drop;
 
