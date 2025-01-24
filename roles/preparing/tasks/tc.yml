@@ -5,6 +5,6 @@
     state: present
 
 - name: Apply CAKE qdisc to the public interface
-  command: "tc qdisc replace dev {{ public_interface }} root cake diffserv4"
+  command: "tc qdisc replace dev {{ public_interface }} root cake diffserv4 bandwidth {{ bandwidth }} rtt {{ rtt }}"
   when: public_interface is defined
 

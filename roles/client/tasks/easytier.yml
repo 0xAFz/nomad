@@ -19,3 +19,7 @@
     name: easytier
     state: restarted
     daemon_reload: true
+
+- name: Apply CAKE qdisc to the easytier interface
+  command: "tc qdisc replace dev easytier root cake diffserv4 bandwidth {{ bandwidth }} rtt {{ rtt }}"
+

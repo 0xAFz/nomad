@@ -98,7 +98,13 @@ limit_nofile_soft: 1000000
 limit_nproc_hard: 10000
 limit_nproc_soft: 10000
 
-# ysctll configuration variables
+# traffic control variables
+# cake
+# mbit, gbit, unlimited
+bandwith: 900mbit
+rtt: 100ms
+
+# sysctl configuration variables
 sysctl_config:
   net.core.somaxconn: 65535
   net.ipv4.tcp_fin_timeout: 10
