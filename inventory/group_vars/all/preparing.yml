@@ -47,6 +47,8 @@ firewall_config:
     - 80
     - 443
     - 2087
+    - 8084
+    - 8082
   udp_port_access:
     - 8084
     - 8082
