@@ -23,6 +23,11 @@ table inet mangle {
         udp dport {{ port }} ip dscp set 0x2e
         {% endfor %}
         {% endif %}
+        {% if firewall_config.tcp_port_access is defined %}
+        {% for port in firewall_config.tcp_port_access %}
+        tcp dport {{ port }} ip dscp set 0x2e
+        {% endfor %}
+        {% endif %}
     }
     chain input {
         type filter hook prerouting priority mangle; policy accept;
@@ -38,7 +43,12 @@ table inet mangle {
 
         {% if firewall_config.udp_port_access is defined %}
         {% for port in firewall_config.udp_port_access %}
-        udp sport {{ port }} ip dscp set 0x2e
+        udp dport {{ port }} ip dscp set 0x2e
+        {% endfor %}
+        {% endif %}
+        {% if firewall_config.tcp_port_access is defined %}
+        {% for port in firewall_config.tcp_port_access %}
+        tcp dport {{ port }} ip dscp set 0x2e
         {% endfor %}
         {% endif %}
     }
