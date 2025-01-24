@@ -22,6 +22,7 @@
 {% for port in iptables.udp_port_access %}
 -A PREROUTING -p udp -m udp --dport {{ port }} -j DSCP --set-dscp 46
 {% endfor %}
+{% endif %}
 COMMIT
 
 *filter
