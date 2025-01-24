@@ -1,24 +1,26 @@
 #!/usr/sbin/nft -f
 
+flush ruleset
+
 table inet filter {
     chain prerouting {
         type filter hook prerouting priority raw; policy accept;
 
-        tcp flags == none drop
-        tcp flags fin,syn == fin,syn drop
-        tcp flags syn,rst == syn,rst drop
-        tcp flags fin,rst == fin,rst drop
-        tcp flags fin,ack == fin drop
-        tcp flags ack,urg == urg drop
-        tcp flags psh,ack == psh drop
-        tcp flags == fin,syn,rst,psh,ack,urg drop
-        tcp flags == fin,psh,urg drop
-        tcp flags == fin,syn,psh,urg drop
-        tcp flags == fin,syn,rst,ack,urg drop
+        tcp flags & (fin|syn|rst|psh|ack|urg) == 0x0 drop
+        tcp flags & (fin|syn) == (fin|syn) drop    # FIN + SYN
+        tcp flags & (syn|rst) == (syn|rst) drop    # SYN + RST
+        tcp flags & (fin|rst) == (fin|rst) drop    # FIN + RST
+        tcp flags & (fin|ack) == fin drop          # FIN without ACK
+        tcp flags & (ack|urg) == urg drop          # URG without ACK
+        tcp flags & (psh|ack) == psh drop          # PSH without ACK
+        tcp flags & (fin|syn|rst|psh|ack|urg) == (fin|syn|rst|psh|ack|urg) drop
+        tcp flags & (fin|psh|urg) == (fin|psh|urg) drop
+        tcp flags & (fin|syn|psh|urg) == (fin|syn|psh|urg) drop
+        tcp flags & (fin|syn|rst|ack|urg) == (fin|syn|rst|ack|urg) drop
 
         {% if firewall_config.udp_port_access is defined %}
         {% for port in firewall_config.udp_port_access %}
-        udp dport {{ port }} meta set dscp 46
+        udp dport {{ port }} meta dscp set 46
         {% endfor %}
         {% endif %}
     }
@@ -56,6 +58,10 @@ table inet filter {
 
         tcp dport {{ sshd_config.Port | default('22') }} accept comment "Allow SSH connections."
 
+    }
+
+    chain forward { 		       
+        type filter hook forward priority 0; policy drop; 	    
     }
 
     chain output {
