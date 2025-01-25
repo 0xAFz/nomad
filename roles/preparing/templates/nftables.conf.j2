@@ -18,6 +18,7 @@ table inet mangle {
         tcp flags fin,syn,psh,urg / fin,syn,rst,psh,ack,urg drop
         tcp flags fin,syn,rst,ack,urg / fin,syn,rst,psh,ack,urg drop
 
+        {% if dscp %}
         {% if firewall_config.udp_port_access is defined %}
         {% for port in firewall_config.udp_port_access %}
         udp dport {{ port }} ip dscp set 0x2e
@@ -27,6 +28,7 @@ table inet mangle {
         {% for port in firewall_config.tcp_port_access %}
         tcp dport {{ port }} ip dscp set 0x2e
         {% endfor %}
+        {% endif %}
         {% endif %}
     }
     chain input {
@@ -41,6 +43,7 @@ table inet mangle {
     chain postrouting {
         type filter hook prerouting priority mangle; policy accept;
 
+        {% if dscp %}
         {% if firewall_config.udp_port_access is defined %}
         {% for port in firewall_config.udp_port_access %}
         udp dport {{ port }} ip dscp set 0x2e
@@ -50,6 +53,7 @@ table inet mangle {
         {% for port in firewall_config.tcp_port_access %}
         tcp dport {{ port }} ip dscp set 0x2e
         {% endfor %}
+        {% endif %}
         {% endif %}
     }
 }

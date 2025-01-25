@@ -15,6 +15,7 @@
 -A PREROUTING -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG FIN,PSH,URG -j DROP
 -A PREROUTING -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG FIN,SYN,PSH,URG -j DROP
 -A PREROUTING -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG FIN,SYN,RST,ACK,URG -j DROP
+{% if dscp %}
 {% if firewall_config.udp_port_access is defined %}
 {% for port in firewall_config.udp_port_access %}
 -A PREROUTING -p udp -m udp --dport {{ port }} -j DSCP --set-dscp 46
@@ -34,6 +35,7 @@
 {% for port in firewall_config.tcp_port_access %}
 -A POSTROUTING -p udp -m tcp --sport {{ port }} -j DSCP --set-dscp 46
 {% endfor %}
+{% endif %}
 {% endif %}
 COMMIT
 

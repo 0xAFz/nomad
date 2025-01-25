@@ -58,6 +58,11 @@ firewall_config:
     - "{{ hostvars['external-network'].ansible_host }}/32"
     - "{{ hostvars['internal-network'].ansible_host }}/32"
 
+
+# packet dscp configuration
+# https://en.wikipedia.org/wiki/Differentiated_services
+dscp: false
+
 # fail2ban configuration
 fail2ban:
   bantime: 10m
